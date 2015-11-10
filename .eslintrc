@@ -1,0 +1,7 @@
+{
+  "extends": "mourner",
+  "rules": {
+    "space-before-function-paren": 0,
+    "no-process-exit": 0
+  }
+}

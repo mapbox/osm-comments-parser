@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm-notes>
+<note id="4" lat="36.7232991" lon="68.8641500" created_at="2013-04-24T08:07:02Z" closed_at="2013-04-24T08:08:51Z">
+  <comment action="opened" timestamp="2013-04-24T08:07:02Z" uid="1626" user="FredB">test</comment>
+  <comment action="closed" timestamp="2013-04-24T08:08:51Z" uid="1626" user="FredB"></comment>
+</note>
+<note id="5" lat="51.7609210" lon="-0.0112063" created_at="2013-04-24T08:10:38Z" closed_at="2013-04-24T21:31:47Z">
+  <comment action="opened" timestamp="2013-04-24T08:10:38Z" uid="3980" user="TomH">This building has been demolished and is currently a construction site.</comment>
+  <comment action="closed" timestamp="2013-04-24T21:31:47Z" uid="3980" user="TomH"></comment>
+</note>
+<note id="6" lat="35.5170066" lon="139.6322554" created_at="2013-04-24T08:12:38Z" closed_at="2013-05-10T12:28:11Z">
+  <comment action="opened" timestamp="2013-04-24T08:12:38Z" uid="378532" user="nyampire">Ministopは閉店済み</comment>
+  <comment action="closed" timestamp="2013-05-10T12:28:11Z" uid="10353" user="gorn">name corrected</comment>
+</note>
+<note id="7" lat="50.9381992" lon="1.8605947" created_at="2013-04-24T08:14:28Z" closed_at="2013-04-24T08:14:50Z">
+  <comment action="opened" timestamp="2013-04-24T08:14:28Z">Adresse complète :
+B&amp;B CALAIS Centre St Pierre 	 
+ZAC Curie
+Rue de Lille
+62100 CALAIS
+Tel. 08 92 70 75 18 (0.34€ TTC/mn depuis un poste fixe)
+Fax. 03 21 00 92 71
+Parking, accès handicapé, wifi, ascenseur, caméra</comment>
+  <comment action="closed" timestamp="2013-04-24T08:14:50Z" uid="37548" user="Marcussacapuces91"></comment>
+</note>
+<note id="8" lat="50.7550836" lon="6.1373234" created_at="2013-04-24T08:15:06Z">
+  <comment action="opened" timestamp="2013-04-24T08:15:07Z" uid="293774" user="Oli-Wan">test</comment>
+</note>
+<note id="9" lat="47.3958110" lon="8.3768338" created_at="2013-04-24T08:17:47Z" closed_at="2013-07-03T21:20:32Z">
+  <comment action="opened" timestamp="2013-04-24T08:17:47Z">Building is currently demolished</comment>
+  <comment action="closed" timestamp="2013-07-03T21:20:32Z" uid="8296" user="kuede">Hat schon jemand eingetragen...</comment>
+</note>
+
+</osm-notes>

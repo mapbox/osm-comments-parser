@@ -1,0 +1,24 @@
+{
+  "name": "osm-comments-notes-parser",
+  "version": "0.0.1",
+  "description": "Parses through OSM changeset discussion and notes files and puts them into a postgres db",
+  "main": "index.js",
+  "scripts": {
+    "test": "./test/setup.sh && node test/test.js && ./test/teardown.sh",
+    "lint": "./node_modules/eslint/bin/eslint.js *.js test/*.js",
+    "pretest": "npm run lint"
+  },
+  "author": "sanjay@mapbox.com",
+  "license": "ISC",
+  "dependencies": {
+    "pg": "^4.4.3",
+    "queue-async": "^1.0.7",
+    "sax": "^1.1.4",
+    "sax-async": "0.0.4",
+    "tape": "^4.2.2"
+  },
+  "devDependencies": {
+    "eslint": "^1.9.0",
+    "eslint-config-mourner": "^1.0.1"
+  }
+}

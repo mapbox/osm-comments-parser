@@ -1,0 +1,11 @@
+[
+    {
+        "description": "checks that 6 notes were added",
+        "sql": "SELECT count(id) FROM notes",
+        "expected": [
+            {
+                "count": "6"
+            }
+        ]
+    }
+]

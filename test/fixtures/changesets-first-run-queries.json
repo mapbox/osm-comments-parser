@@ -1,0 +1,11 @@
+[
+    {
+        "description": "checks that 7 changesets were added",
+        "sql": "SELECT count(id) FROM changesets",
+        "expected": [
+            {
+                "count": "7"
+            }
+        ]
+    }
+]
