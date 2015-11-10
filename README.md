@@ -9,8 +9,6 @@ Run `npm install`
 Setup database:
 
     createdb <db_name>
-    psql <db_name>
-    \q
     psql <db_name> < create_tables.sql
 
 Setup environment variables required for the project:
