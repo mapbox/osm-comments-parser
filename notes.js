@@ -25,11 +25,14 @@ function processFile(options, callback) {
     options = options || {};
     var filename = options.filename || 'data/planet-notes-latest.osn';
     var pgURL = options.pgURL || process.env.OSM_COMMENTS_POSTGRES_URL || 'postgres://postgres@localhost/osm-comments';
-    pg.connect(pgURL, function(err, client) {
+    pg.connect(pgURL, function(err, client, done) {
         if (err) {
             return console.error('could not connect to postgres', err);
         }
-        parseNotes(filename, client, callback);
+        parseNotes(filename, client, function() {
+            done();
+            callback();
+        });
     });
 }
 
@@ -65,7 +68,6 @@ function parseNotes(xmlFilename, client, callback) {
         }
     });
     saxStream.hookSync('end', function() {
-        client.end();
         callback();
     });
 

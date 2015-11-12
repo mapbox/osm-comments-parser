@@ -24,11 +24,14 @@ function processFile(options, callback) {
     options = options || {};
     options.filename = options.filename || 'data/discussions-latest.osm';
     options.pgURL = options.pgURL || process.env.OSM_COMMENTS_POSTGRES_URL || 'postgres://postgres@localhost/osm-comments';
-    pg.connect(options.pgURL, function(err, client) {
+    pg.connect(options.pgURL, function(err, client, done) {
         if (err) {
             return console.error('could not connect to postgres', err);
         }
-        parseChangesets(options.filename, client, callback);
+        parseChangesets(options.filename, client, function() {
+            done();
+            callback();
+        });
     });
 }
 
