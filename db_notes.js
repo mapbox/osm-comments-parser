@@ -7,6 +7,7 @@ var util = require('util');
 var helpers = require('./helpers');
 var queue = require('queue-async');
 var dbUsers = require('./db_users');
+var _ = require('underscore');
 
 module.exports = {};
 
@@ -18,10 +19,13 @@ function saveNote(client, note, next) {
     var id = attribs.ID;
     var lat = parseFloat(attribs.LAT);
     var lon = parseFloat(attribs.LON);
+    var user = getOpenedByUser(note);
+    var userID = user.id ? Number(user.id) : null;
+    var userName =  user.name || null;
     var createdAt = attribs.CREATED_AT;
     var closedAt = attribs.CLOSED_AT || null;
     var pt = util.format('POINT(%d %d)', lon, lat);
-    var params = [id, createdAt, closedAt, pt];
+    var params = [id, createdAt, closedAt, userID, pt];
     var selectQuery = 'SELECT id, created_at from notes where id=$1';
 
     client.query(selectQuery, [id], function(err, result) {
@@ -37,9 +41,24 @@ function saveNote(client, note, next) {
                 saveComments(client, note, next);
             }
         } else {
-            insertNote(client, params, note, next, saveComments);
+            dbUsers.saveUser(client, userID, userName, function() {
+                insertNote(client, params, note, next, saveComments);
+            });
         }
     });
+}
+
+function getOpenedByUser(note) {
+    var openingComment = _.find(note.comments, function(comment) {
+        return comment.attributes.ACTION === 'opened';
+    });
+    if (!openingComment) {
+        return {};
+    }
+    return {
+        'id': openingComment.attributes.UID || null,
+        'name': openingComment.attributes.USER || null
+    };
 }
 
 function updateNote(client, params, note, next, callback) {
@@ -53,7 +72,7 @@ function updateNote(client, params, note, next, callback) {
 }
 
 function insertNote(client, params, note, next, callback) {
-    var insertQuery = 'INSERT INTO notes (id, created_at, closed_at, point) VALUES ($1, $2, $3, ST_GeomFromText($4, 4326))';
+    var insertQuery = 'INSERT INTO notes (id, created_at, closed_at, opened_by, point) VALUES ($1, $2, $3, $4, ST_GeomFromText($5, 4326))';
     client.query(insertQuery, params, function(err) {
         if (err) {
             console.log('error inserting note', err);
