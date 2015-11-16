@@ -1,0 +1,33 @@
+<osm> 
+ <changeset id="34721793" created_at="2015-10-18T22:23:15Z" closed_at="2015-10-18T22:23:16Z" open="false" user="FahRadler" uid="344561" min_lat="57.1613000" min_lon="10.2474101" max_lat="57.1668117" max_lon="10.2570929" num_changes="37" comments_count="2">
+  <tag k="source" v="Bing"/>
+  <tag k="comment" v="Fernwärme ergänzt"/>
+  <tag k="created_by" v="JOSM/1.5 (8800 de)"/>
+  <discussion>
+   <comment uid="207581" user="Hjart" date="2015-10-18T22:49:00Z">
+    <text>Danish addressnodes are maintained by scripts and are actually by law not associated with any specific building. Please do not touch them.</text>
+   </comment>
+   <comment uid="207581" user="Hjart" date="2015-10-18T22:55:00Z">
+    <text>test</text>
+   </comment>
+   <comment uid="207581" user="Hjart" date="2015-10-18T23:55:00Z">
+    <text>test update</text>
+   </comment>
+  </discussion>
+ </changeset>
+ <changeset id="34721794" created_at="2015-10-18T22:23:19Z" closed_at="2015-10-18T22:23:20Z" open="false" user="ansuta" uid="3188422" min_lat="42.6291332" min_lon="-0.3186246" max_lat="42.6292013" max_lon="-0.3185371" num_changes="5" comments_count="0">
+  <tag k="host" v="https://www.openstreetmap.org/id"/>
+  <tag k="locale" v="es"/>
+  <tag k="comment" v="Biescas"/>
+  <tag k="created_by" v="iD 1.7.4"/>
+  <tag k="imagery_used" v="Bing"/>
+ </changeset>
+ <changeset id="35721794" created_at="2015-10-18T23:23:19Z" closed_at="2015-10-18T23:23:20Z" open="false" user="ansuta" uid="3188422" min_lat="42.6291332" min_lon="-0.3186246" max_lat="42.6292013" max_lon="-0.3185371" num_changes="6" comments_count="0">
+  <tag k="host" v="https://www.openstreetmap.org/id"/>
+  <tag k="locale" v="es"/>
+  <tag k="comment" v="Biescas"/>
+  <tag k="created_by" v="iD 1.7.4"/>
+  <tag k="imagery_used" v="Bing"/>
+ </changeset>
+ 
+</osm>

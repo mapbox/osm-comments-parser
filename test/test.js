@@ -7,11 +7,13 @@ var pg = require('pg');
 var queue = require('queue-async');
 var notesFirstRunQueries = require('./fixtures/notes-first-run-queries.json');
 var changesetsFirstRunQueries = require('./fixtures/changesets-first-run-queries.json');
+var notesSecondRunQueries = require('./fixtures/notes-second-run-queries.json');
+var changesetsSecondRunQueries = require('./fixtures/changesets-second-run-queries.json');
 var TEST_PG_URL = process.env.OSM_COMMENTS_TEST_POSTGRES_URL || 'postgres://postgres@localhost/osm-comments-test';
 
 tape('check notes parser', function(assert) {
     var options = {
-        'filename': 'test/fixtures/planet-notes-latest-truncated.osn',
+        'filename': 'test/fixtures/notes-first-run.osn',
         'pgURL': TEST_PG_URL
     };
     processNotes(options, function() {
@@ -34,7 +36,7 @@ tape('check notes parser', function(assert) {
 
 tape('check changesets parser', function(assert) {
     var options = {
-        'filename': 'test/fixtures/discussions-latest-truncated.osm',
+        'filename': 'test/fixtures/discussions-first-run.osm',
         'pgURL': TEST_PG_URL
     };
     processChangesets(options, function() {
@@ -45,6 +47,51 @@ tape('check changesets parser', function(assert) {
             }
             var q = queue(10);
             changesetsFirstRunQueries.forEach(function(query) {
+                q.defer(runQuery, client, assert, query);
+            });
+            q.awaitAll(function() {
+                assert.end();
+                // process.exit(0);
+            });
+        });
+    });
+});
+
+tape('check notes parser on update', function(assert) {
+    var options = {
+        'filename': 'test/fixtures/notes-second-run.osn',
+        'pgURL': TEST_PG_URL
+    };
+    processNotes(options, function() {
+        assert.pass('notes parser update ran and callback called');
+        pg.connect(options.pgURL, function(err, client) {
+            if (err) {
+                console.log('db connection error', err);
+            }
+            var q = queue(10);
+            notesSecondRunQueries.forEach(function(query) {
+                q.defer(runQuery, client, assert, query);
+            });
+            q.awaitAll(function() {
+                assert.end();
+            });
+        });
+    });
+});
+
+tape('check changeset parser on update', function(assert) {
+    var options = {
+        'filename': 'test/fixtures/discussions-second-run.osm',
+        'pgURL': TEST_PG_URL
+    };
+    processChangesets(options, function() {
+        assert.pass('changeset parser update ran and callback called');
+        pg.connect(options.pgURL, function(err, client) {
+            if (err) {
+                console.log('db connection error', err);
+            }
+            var q = queue(10);
+            changesetsSecondRunQueries.forEach(function(query) {
                 q.defer(runQuery, client, assert, query);
             });
             q.awaitAll(function() {

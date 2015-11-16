@@ -1,0 +1,20 @@
+[
+    {
+        "description": "checks changeset count is now 8",
+        "sql": "SELECT count(id) FROM changesets",
+        "expected": [
+            {
+                "count": "8"
+            }
+        ]
+    },
+    {
+        "description": "check that comment count for id=34721793 is now 3",
+        "sql": "SELECT count(id) FROM changeset_comments WHERE changeset_id=34721793",
+        "expected": [
+            {
+                "count": "3"
+            }
+        ]
+    }
+]

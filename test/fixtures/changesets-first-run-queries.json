@@ -70,5 +70,32 @@
                 "value": "Bing"
             }
         ]
+    },
+    {
+        "description": "checks that changeset user has been saved correctly",
+        "sql": "SELECT name FROM users WHERE id=344561",
+        "expected": [
+            {
+                "name": "FahRadler"
+            }
+        ]
+    },
+    {
+        "description": "checks that commenting user has been saved correctly",
+        "sql": "SELECT name FROM users WHERE id=207581",
+        "expected": [
+            {
+                "name": "Hjart"
+            }
+        ]
+    },
+    {
+        "description": "checks that comment timestamp is saved correctly",
+        "sql": "SELECT to_char(timestamp, 'YYYY-MM-DD HH24:MI:SS') AS timestamp FROM changeset_comments WHERE id='4d3664db-486d-4271-229e-9dd7e6cde1c5'",
+        "expected": [
+            {
+                "timestamp": "2015-10-18 22:49:00"
+            }
+        ]
     }
 ]

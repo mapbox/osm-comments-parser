@@ -1,0 +1,20 @@
+[
+    {
+        "description": "checks that total notes is now 7",
+        "sql": "SELECT count(id) FROM notes",
+        "expected": [
+            {
+                "count": "7"
+            }
+        ]
+    },
+    {
+        "description": "check that note with id=8 now has 2 comments",
+        "sql": "SELECT count(id) FROM note_comments WHERE note_id=8",
+        "expected": [
+            {
+                "count": "2"
+            }
+        ]
+    }
+]
