@@ -1,11 +1,16 @@
 <osm> 
- <changeset id="34721793" created_at="2015-10-18T22:23:15Z" closed_at="2015-10-18T22:23:16Z" open="false" user="FahRadler" uid="344561" min_lat="57.1613000" min_lon="10.2474101" max_lat="57.1668117" max_lon="10.2570929" num_changes="37" comments_count="1">
+ <changeset id="34721793" created_at="2015-10-18T22:23:15Z" closed_at="2015-10-18T22:23:16Z" open="false" user="FahRadler" uid="344561" min_lat="57.1613000" min_lon="10.2474101" max_lat="57.1668117" max_lon="10.2570929" num_changes="37" comments_count="2">
   <tag k="source" v="Bing"/>
   <tag k="comment" v="Fernwärme ergänzt"/>
   <tag k="created_by" v="JOSM/1.5 (8800 de)"/>
   <discussion>
    <comment uid="207581" user="Hjart" date="2015-10-18T22:49:00Z">
     <text>Danish addressnodes are maintained by scripts and are actually by law not associated with any specific building. Please do not touch them.</text>
+   </comment>
+  </discussion>
+  <discussion>
+   <comment uid="207581" user="Hjart" date="2015-10-18T22:55:00Z">
+    <text>test</text>
    </comment>
   </discussion>
  </changeset>

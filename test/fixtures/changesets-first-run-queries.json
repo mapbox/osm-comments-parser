@@ -7,5 +7,68 @@
                 "count": "7"
             }
         ]
+    },
+    {
+        "description": "checks that created_at is saved correctly",
+        "sql": "SELECT to_char(created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at FROM changesets WHERE id=34721793",
+        "expected": [
+            {
+                "created_at": "2015-10-18 22:23:15"
+            }
+        ]
+    },
+    {
+        "description": "checks that closed_at is being saved correctly",
+        "sql": "SELECT to_char(closed_at, 'YYYY-MM-DD HH24:MI:SS') AS closed_at FROM changesets WHERE id=34721793",
+        "expected": [
+            {
+                "closed_at": "2015-10-18 22:23:16"
+            }
+        ]
+    },
+    {
+        "description": "checks that num_changes and comments_count is saved correctly",
+        "sql": "SELECT num_changes FROM changesets WHERE id=34721793",
+        "expected": [
+            {
+                "num_changes": 37
+            }
+        ]
+    },
+    {
+        "description": "checks that comments count is correct",
+        "sql": "SELECT count(id) FROM changeset_comments WHERE changeset_id=34721793",
+        "expected": [
+            {
+                "count": "2"
+            }
+        ]
+    },
+    {
+        "description": "checks that comment md5 id and comment text is being saved",
+        "sql": "SELECT comment FROM changeset_comments WHERE id='4ec37e85-5e39-f046-86f8-cdce9a0f6fc8'",
+        "expected": [
+            {
+                "comment": "test"
+            }
+        ]
+    },
+    {
+        "description": "checks that tag count is correct",
+        "sql": "SELECT count(id) FROM changeset_tags WHERE changeset_id=34721793",
+        "expected": [
+            {
+                "count": "3"
+            }
+        ]
+    },
+    {
+        "description": "checks that tag key values are being saved correctly",
+        "sql": "SELECT value FROM changeset_tags WHERE changeset_id=34721793 AND key='source'",
+        "expected": [
+            {
+                "value": "Bing"
+            }
+        ]
     }
 ]
