@@ -101,10 +101,11 @@ function saveComments(client, changeset, callback) {
 }
 
 function saveComment(client, changeset, comment, callback) {
+    // console.log('saving comment', comment);
     var changesetID = changeset.attributes.ID;
-    var userID = comment.UID || null;
-    var userName = comment.USER || null;
-    var timestamp = comment.DATE;
+    var userID = comment.attributes.UID || null;
+    var userName = comment.attributes.USER || null;
+    var timestamp = comment.attributes.DATE;
     comment.changesetID = changesetID;
     var md5 = helpers.getHash(JSON.stringify(comment));
     var selectQuery = 'SELECT id from changeset_comments where id=$1';
