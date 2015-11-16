@@ -7,5 +7,78 @@
                 "count": "6"
             }
         ]
+    },
+    {
+        "description": "checks created_at, closed_at for note id=4 was added correctly",
+        "sql": "SELECT to_char(created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at, to_char(closed_at, 'YYYY-MM-DD HH24:MI:SS') AS closed_at FROM notes WHERE id=4",
+        "expected": [
+            {
+                "created_at": "2013-04-24 08:07:02",
+                "closed_at": "2013-04-24 08:08:51"
+            }
+        ]
+    },
+    {
+        "description": "checks that geometry for note id=4 was added correctly",
+        "sql": "SELECT ST_AsText(point) AS point FROM notes WHERE id=4",
+        "expected": [
+            {
+                "point": "POINT(68.86415 36.7232991)"
+            }
+        ]
+    },
+    {
+        "description": "checks that 2 comments got saved for note id=4",
+        "sql": "SELECT count(id) FROM note_comments WHERE note_id=4",
+        "expected": [
+            {
+                "count": "2"
+            }
+        ]
+    },
+    {
+        "description": "checks that note id=4 opened_by was saved correctly",
+        "sql": "SELECT opened_by FROM notes WHERE id=4",
+        "expected": [
+            {
+                "opened_by": 1626
+            }
+        ]
+    },
+    {
+        "description": "checks that user id=1626 is saved with usernamed FredB",
+        "sql": "SELECT name FROM users WHERE id=1626",
+        "expected": [
+            {
+                "name": "FredB"
+            }
+        ]
+    },
+    {
+        "description": "checks that comment text is being saved",
+        "sql": "SELECT comment FROM note_comments WHERE note_id=4 AND action='opened'",
+        "expected": [
+            {
+                "comment": "test"
+            }
+        ]
+    },
+    {
+        "description": "checks that comment timestamp is being saved",
+        "sql": "SELECT to_char(timestamp, 'YYYY-MM-DD HH24:MI:SS') AS timestamp FROM note_comments WHERE note_id=4 AND action='opened'",
+        "expected": [
+            {
+                "timestamp": "2013-04-24 08:07:02"
+            }
+        ]
+    },
+    {
+        "description": "check comment md5 id is being saved",
+        "sql": "SELECT id FROM note_comments WHERE note_id=4 AND action='closed'",
+        "expected": [
+            {
+                "id": "5b995e4f-b62c-1f6b-6969-da54a07f5fc9"
+            }
+        ]
     }
 ]
