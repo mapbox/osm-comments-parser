@@ -1,7 +1,7 @@
 'use strict';
 
-var dbUsers = require('./db_users');
-var helpers = require('./helpers');
+var dbUsers = require('../users/db');
+var helpers = require('../helpers');
 var queue = require('queue-async');
 
 module.exports = {};

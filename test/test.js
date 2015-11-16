@@ -1,8 +1,8 @@
 'use strict';
 
 var tape = require('tape');
-var processNotes = require('../notes');
-var processChangesets = require('../changesets');
+var processNotes = require('../index').parseNotes;
+var processChangesets = require('../index').parseChangesets;
 var pg = require('pg');
 var queue = require('queue-async');
 var notesFirstRunQueries = require('./fixtures/notes-first-run-queries.json');

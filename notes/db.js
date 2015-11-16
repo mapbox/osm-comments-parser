@@ -4,9 +4,9 @@
     Responsible for interfacing with the database
 */
 var util = require('util');
-var helpers = require('./helpers');
+var helpers = require('../helpers');
 var queue = require('queue-async');
-var dbUsers = require('./db_users');
+var dbUsers = require('../users/db');
 var _ = require('underscore');
 
 module.exports = {};
