@@ -4,6 +4,7 @@ var SaxAsync = require('sax-async');
 var fs = require('fs');
 var pg = require('pg');
 var db = require('./db');
+var csv = require('./csv');
 
 module.exports = processFile;
 
@@ -20,24 +21,29 @@ module.exports = processFile;
 
     @returns {undefined}
 */
+
 function processFile(options, callback) {
+    console.time('csv');
     options = options || {};
-    options.filename = options.filename || 'data/discussions-latest.osm';
+    options.isInitial = options.initial || true;
+    options.filename = options.filename || 'data/discussions-latest.osm'; // 'data/discussions-latest.osm';
     options.pgURL = options.pgURL || process.env.OSM_COMMENTS_POSTGRES_URL || 'postgres://postgres@localhost/osm-comments';
     pg.connect(options.pgURL, function(err, client, done) {
         if (err) {
             return console.error('could not connect to postgres', err);
         }
-        parseChangesets(options.filename, client, function() {
+        parseChangesets(options, client, function() {
+            console.timeEnd('csv');
             done();
-            callback();
+            if (callback) callback();
         });
     });
 }
 
-function parseChangesets(xmlFilename, client, callback) {
+function parseChangesets(options, client, callback) {
     var saxStream = new SaxAsync();
     var currentChangeset, currentComment;
+    var xmlFilename = options.filename;
 
     saxStream.hookSync('opentag', function(node) {
         var tagName = node.name.toLowerCase();
@@ -55,7 +61,11 @@ function parseChangesets(xmlFilename, client, callback) {
     saxStream.hookAsync('closetag', function(next, tagName) {
         tagName = tagName.toLowerCase();
         if (tagName === 'changeset') {
-            db.saveChangeset(client, currentChangeset, next);
+            if (options.isInitial) {
+                csv.saveChangeset(currentChangeset, next);
+            } else {
+                db.saveChangeset(client, currentChangeset, next);
+            }
         } else if (tagName === 'tag') {
             next();
         } else if (tagName === 'comment') {
@@ -74,7 +84,15 @@ function parseChangesets(xmlFilename, client, callback) {
     saxStream.hookSync('end', function() {
         // client.end();
         console.log('all done');
-        callback();
+        if (options.isInitial) {
+            csv.writeToCSV(function() {
+                csv.writeUsers(function() {
+                    callback();
+                });
+            });
+        } else {
+            callback();
+        }
     });
 
     fs.createReadStream(xmlFilename)
