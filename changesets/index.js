@@ -25,7 +25,7 @@ module.exports = processFile;
 function processFile(options, callback) {
     console.time('csv');
     options = options || {};
-    options.isInitial = options.initial || true;
+    options.isInitial = options.initial || false;
     options.filename = options.filename || 'data/discussions-latest.osm'; // 'data/discussions-latest.osm';
     options.pgURL = options.pgURL || process.env.OSM_COMMENTS_POSTGRES_URL || 'postgres://postgres@localhost/osm-comments';
     pg.connect(options.pgURL, function(err, client, done) {
