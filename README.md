@@ -31,3 +31,7 @@ Currently, in a node shell:
 ### Test
 
 Run `npm test`
+
+### Initial load of changesets
+
+When starting out with an empty database, there is an optimized way to load the initial backlog of changesets. Create an empty folder called `csv` in the project root and pass the option: `initial=true` changesetParser. After this command is run, run `psql <db_name> < changesets/post_initial.sql` to load the CSVs into the database. FIXME: this should be scripted.
