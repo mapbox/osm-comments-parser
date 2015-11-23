@@ -27,22 +27,26 @@ CREATE TABLE IF NOT EXISTS changesets (
     created_at timestamptz,
     closed_at timestamptz NULL,
     is_open boolean,
-    user_id integer REFERENCES users (id),
-    bbox geometry(POLYGON, 4326),
+    user_id integer,
+    min_lon float NULL,
+    min_lat float NULL,
+    max_lon float NULL,
+    max_lat float NULL,
+    bbox geometry(POLYGON, 4326) NULL,
     num_changes integer
 );
 
 CREATE TABLE IF NOT EXISTS changeset_tags (
     id uuid PRIMARY KEY,
-    changeset_id integer REFERENCES changesets (id),
+    changeset_id integer,
     key text,
     value text
 );
 
 CREATE TABLE IF NOT EXISTS changeset_comments (
     id uuid PRIMARY KEY,
-    changeset_id integer REFERENCES changesets (id),
-    user_id integer REFERENCES users (id) NULL,
+    changeset_id integer,
+    user_id integer NULL,
     timestamp timestamptz,
     comment text 
 );
