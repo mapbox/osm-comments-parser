@@ -57,7 +57,6 @@ function saveChangeset(changeset, next) {
         ];
         tags.push(tagRow);
     });
-    console.log(changesets.length);
     if (changesets.length > 100000) {
         writeToCSV(function() {
             next();
