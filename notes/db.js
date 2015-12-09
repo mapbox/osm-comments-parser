@@ -14,7 +14,6 @@ module.exports = {};
 module.exports.saveNote = saveNote;
 
 function saveNote(client, note, next) {
-    console.time('saveNote');
     var attribs = note.attributes;
     var id = attribs.ID;
     var lat = parseFloat(attribs.LAT);
@@ -84,7 +83,6 @@ function insertNote(client, params, note, next, callback) {
 function saveComments(client, note, next) {
     var comments = note.comments;
     if (comments.length === 0) {
-        console.timeEnd('saveNote');
         next();
     }
     var q = queue(1);
@@ -92,7 +90,6 @@ function saveComments(client, note, next) {
         q.defer(saveComment, client, comment, note);
     });
     q.awaitAll(function() {
-        console.timeEnd('saveNote');
         next();
     });
 }
