@@ -1,14 +1,18 @@
 {
   "name": "osm-comments-notes-parser",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Parses through OSM changeset discussion and notes files and puts them into a postgres db",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mapbox/osm-comments-parser.git"
+  },
   "scripts": {
     "test": "./test/setup.sh && node test/test.js && ./test/teardown.sh",
     "lint": "./node_modules/eslint/bin/eslint.js *.js test/*.js",
     "pretest": "npm run lint"
   },
-  "author": "sanjay@mapbox.com",
+  "author": "Sanjay Bhangar",
   "license": "ISC",
   "dependencies": {
     "csv": "^0.4.6",
