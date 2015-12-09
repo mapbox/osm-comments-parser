@@ -23,7 +23,6 @@ module.exports = processFile;
 */
 
 function processFile(options, callback) {
-    console.time('csv');
     options = options || {};
     options.isInitial = options.initial || false;
     options.filename = options.filename || 'data/discussions-latest.osm'; // 'data/discussions-latest.osm';
@@ -33,7 +32,6 @@ function processFile(options, callback) {
             return console.error('could not connect to postgres', err);
         }
         parseChangesets(options, client, function() {
-            console.timeEnd('csv');
             done();
             if (callback) callback();
         });
