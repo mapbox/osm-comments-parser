@@ -13,7 +13,8 @@ function saveChangeset(client, changeset, next) {
 
     // if changeset is still open, don't save it
     if (attribs.OPEN === 'true') {
-        next();
+        return next();
+
     }
 
     var id = attribs.ID;
@@ -24,8 +25,8 @@ function saveChangeset(client, changeset, next) {
         }
         if (result.rows.length > 0) {
             saveComments(client, changeset, function() {
-                next();
-                return;
+                return next();
+                
             });
         } else {
             var createdAt = attribs.CREATED_AT;
