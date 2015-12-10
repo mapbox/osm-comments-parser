@@ -1,6 +1,6 @@
 var helpers = require('../helpers');
 var stringify = require('csv').stringify;
-var fs = require('fs');
+var fs = require('graceful-fs');
 var path = require('path');
 
 module.exports = {};
