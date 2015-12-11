@@ -1,6 +1,6 @@
 var helpers = require('../helpers');
 var stringify = require('csv').stringify;
-var fs = require('graceful-fs');
+var fs = require('fs');
 var path = require('path');
 
 module.exports = {};
@@ -57,7 +57,7 @@ function saveChangeset(changeset, next) {
         ];
         tags.push(tagRow);
     });
-    if (changesets.length > 100000) {
+    if (changesets.length > 200000) {
         writeToCSV(function() {
             next();
         });
@@ -81,6 +81,7 @@ function writeToCSV(callback) {
     stringifier.on('finish', function(){
         var outStream = fs.createWriteStream(changesetsFile, {'flags': 'a'});
         outStream.write(data, function() {
+            outStream.end();
             writeTags(callback);
         });
     });
@@ -106,6 +107,7 @@ function writeTags(callback) {
     stringifier.on('finish', function(){
         var outStream = fs.createWriteStream(tagsFile, {'flags': 'a'});
         outStream.write(data, function() {
+            outStream.end();
             writeComments(callback);
         });
     });
@@ -134,7 +136,10 @@ function writeComments(callback) {
     });
     stringifier.on('finish', function(){
         var outStream = fs.createWriteStream(commentsFile, {'flags': 'a'});
-        outStream.write(data, callback);
+        outStream.write(data, function() {
+            outStream.end();
+            callback();
+        });
     });
     comments.forEach(function(row) {
         stringifier.write(row);
@@ -166,7 +171,10 @@ function writeUsers(callback) {
     });
     stringifier.on('finish', function(){
         var outStream = fs.createWriteStream(usersFile, {'flags': 'a'});
-        outStream.write(data, callback);
+        outStream.write(data, function() {
+            outStream.end();
+            callback();
+        });;
     });
     usersArray.forEach(function(row) {
         stringifier.write(row);
