@@ -18,16 +18,24 @@ function saveChangeset(client, changeset, next) {
     }
 
     var id = attribs.ID;
-    var selectQuery = 'SELECT id FROM changesets WHERE id=$1';
+    var selectQuery = 'SELECT id, discussion_count FROM changesets WHERE id=$1';
     client.query(selectQuery, [id], function(err, result) {
         if (err) {
             console.log('error selecting changeset', err);
         }
         if (result.rows.length > 0) {
-            saveComments(client, changeset, function() {
+            //TODO: update discussion count
+            if (result.rows[0].discussion_count !== Number(attribs.COMMENTS_COUNT)) {
                 return next();
-                
-            });
+            } else {
+                var updateQ = 'UPDATE changesets SET discussion_count=$1 WHERE id=$2';
+                var params = [attribs.COMMENTS_COUNT, id];
+                client.query(updateQ, params, function(err, result) {
+                    saveComments(client, changeset, function() {
+                        return next();
+                    });
+                });
+            }
         } else {
             var createdAt = attribs.CREATED_AT;
             var closedAt = attribs.CLOSED_AT || null;
@@ -35,8 +43,9 @@ function saveChangeset(client, changeset, next) {
             var userID = attribs.UID;
             var userName = attribs.USER;
             var numChanges = attribs.NUM_CHANGES;
-            var insertQuery = 'INSERT INTO changesets (id, created_at, closed_at, is_open, user_id, bbox, num_changes) VALUES ($1, $2, $3, $4, $5, ST_MakeEnvelope($6, $7, $8, $9, 4326), $10)';
-            var params = [id, createdAt, closedAt, isOpen, userID, attribs.MIN_LON, attribs.MIN_LAT, attribs.MAX_LON, attribs.MAX_LAT, numChanges];
+            var discussionCount = attribs.COMMENTS_COUNT;
+            var insertQuery = 'INSERT INTO changesets (id, created_at, closed_at, is_open, user_id, bbox, num_changes, discussion_count) VALUES ($1, $2, $3, $4, $5, ST_MakeEnvelope($6, $7, $8, $9, 4326), $10, $11)';
+            var params = [id, createdAt, closedAt, isOpen, userID, attribs.MIN_LON, attribs.MIN_LAT, attribs.MAX_LON, attribs.MAX_LAT, numChanges, discussionCount];
             dbUsers.saveUser(client, userID, userName, function() {
                 client.query(insertQuery, params, function(err) {
                     if (err) {

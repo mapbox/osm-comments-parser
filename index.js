@@ -54,7 +54,7 @@ function parseChangesets(options, callback) {
 module.exports.backfillChangesets = function(start, end, callback) {
     var baseURL = 'http://planet.osm.org/replication/changesets/';
     var urls = [];
-    for (var i=start; i < (end + 1); i++) {
+    for (var i = start; i < (end + 1); i++) {
         urls.push(getURL(baseURL, i));
     }
     var q = queue(8);
@@ -88,19 +88,18 @@ function parseURL(url, callback) {
             });
 
         });
-        
 }
 
 
 function getURL(baseURL, number) {
     var stateStr = number.toString().split('').reverse();
     var diff = 9 - stateStr.length;
-    for (var i=0; i < diff; i++) { stateStr.push('0'); }
+    for (var i = 0; i < diff; i++) { stateStr.push('0'); }
     stateStr = stateStr.join('');
     var url = '';
-    for (i=0; i<(stateStr.length/3); i++) {
-        url += stateStr[i*3] + stateStr[i*3 + 1] + stateStr[i*3 + 2] + '/';
+    for (i = 0; i < (stateStr.length / 3); i++) {
+        url += stateStr[i * 3] + stateStr[i * 3 + 1] + stateStr[i * 3 + 2] + '/';
     }
 
     return baseURL + url.split('').reverse().join('') + '.osm.gz';
-};
+}
