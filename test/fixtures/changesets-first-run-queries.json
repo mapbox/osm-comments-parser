@@ -45,6 +45,15 @@
         ]
     },
     {
+        "description": "checks that discussion_count is being saved correctly",
+        "sql": "SELECT discussion_count from changesets WHERE id=34721793",
+        "expected": [
+            {
+                "discussion_count": 2
+            }
+        ]
+    },
+    {
         "description": "checks that comment md5 id and comment text is being saved",
         "sql": "SELECT comment FROM changeset_comments WHERE id='4ec37e85-5e39-f046-86f8-cdce9a0f6fc8'",
         "expected": [

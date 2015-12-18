@@ -1,2 +1,2 @@
 createdb osm-comments-test;
-psql osm-comments-test < create_tables.sql
+psql osm-comments-test < scripts/create_tables.sql
