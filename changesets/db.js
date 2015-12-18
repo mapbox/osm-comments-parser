@@ -12,9 +12,8 @@ function saveChangeset(client, changeset, next) {
     var attribs = changeset.attributes;
 
     // if changeset is still open, don't save it
-    if (attribs.OPEN === 'true') {
+    if (attribs.OPEN === 'true' || attribs.COMMENTS_COUNT === '0') {
         return next();
-
     }
 
     var id = attribs.ID;
