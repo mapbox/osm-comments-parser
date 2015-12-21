@@ -4,16 +4,16 @@
         "sql": "SELECT count(id) FROM changesets",
         "expected": [
             {
-                "count": "8"
+                "count": "6"
             }
         ]
     },
     {
-        "description": "check that comment count for id=34721793 is now 3",
-        "sql": "SELECT count(id) FROM changeset_comments WHERE changeset_id=34721793",
+        "description": "check that comment count for id=34721798 is now 4",
+        "sql": "SELECT count(id) FROM changeset_comments WHERE changeset_id=34721798",
         "expected": [
             {
-                "count": "3"
+                "count": "4"
             }
         ]
     }

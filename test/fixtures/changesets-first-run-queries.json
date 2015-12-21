@@ -4,7 +4,7 @@
         "sql": "SELECT count(id) FROM changesets",
         "expected": [
             {
-                "count": "7"
+                "count": "5"
             }
         ]
     },

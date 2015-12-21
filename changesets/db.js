@@ -23,8 +23,7 @@ function saveChangeset(client, changeset, next) {
             console.log('error selecting changeset', err);
         }
         if (result.rows.length > 0) {
-            //TODO: update discussion count
-            if (result.rows[0].discussion_count !== Number(attribs.COMMENTS_COUNT)) {
+            if (result.rows[0].discussion_count === Number(attribs.COMMENTS_COUNT)) {
                 return next();
             } else {
                 var updateQ = 'UPDATE changesets SET discussion_count=$1 WHERE id=$2';
