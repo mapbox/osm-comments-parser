@@ -33,8 +33,12 @@ function saveNote(client, note, next) {
         }
         if (result.rows.length > 0) {
             var dbCreatedAt = result.rows[0].created_at;
+            var dbClosedAt = result.rows[0].closed_at;
             var xmlCreatedAt = new Date(createdAt);
-            if (dbCreatedAt.toISOString() !== xmlCreatedAt.toISOString()) {
+            var xmlClosedAt = closedAt ? new Date(closedAt) : null;
+            var dbClosedAtISOString = dbClosedAt ? dbClosedAt.toISOString() : null;
+            var xmlClosedAtISOString = xmlClosedAt ? xmlClosedAt.toISOString() : null;
+            if (dbCreatedAt.toISOString() !== xmlCreatedAt.toISOString() || dbClosedAtISOString !== xmlClosedAtISOString) {
                 updateNote(client, params, note, next, saveComments);
             } else {
                 saveComments(client, note, next);
@@ -61,7 +65,7 @@ function getOpenedByUser(note) {
 }
 
 function updateNote(client, params, note, next, callback) {
-    var updateQuery = 'UPDATE notes SET created_at=$2, closed_at=$3, point=ST_GeomFromText($4, 4326) where id=$1';
+    var updateQuery = 'UPDATE notes SET created_at=$2, closed_at=$3, opened_by=$4, point=ST_GeomFromText($5, 4326) where id=$1';
     client.query(updateQuery, params, function(err) {
         if (err) {
             console.log('error updating note', err);
