@@ -15,6 +15,7 @@ module.exports = processFile;
     @param {Object} options Options object
     @param {string} options.filename Path to XML file
     @param {string} options.pgURL Postgres URL, like 'postgres://postgres@localhost/osm-comments'
+    @param {boolean} options.initial If this is the initial run, generate CSV files to load into Postgres
     @param {processDoneCallback} callback called after file is done processing
 
     @callback processDoneCallback
