@@ -6,6 +6,7 @@ var queue = require('queue-async');
 var request = require('request');
 var fs = require('fs');
 var zlib = require('zlib');
+var minimist = require('minimist');
 
 module.exports = {};
 
@@ -102,4 +103,34 @@ function getURL(baseURL, number) {
     }
 
     return baseURL + url.split('').reverse().join('') + '.osm.gz';
+}
+
+//Is being run as cmd line script.
+if (!module.parent) {
+    var USAGE = 'Usage: \n\tnode index.js <notes|changesets> --filename </path/to/file>';
+    var minimistOpts = {
+        'string': ['filename', 'pgURL'],
+        'boolean': ['initial']
+    };
+    var argv = minimist(process.argv.slice(2), minimistOpts);
+    var posParams = argv._;
+    if (posParams.length === 0) {
+        console.error(USAGE);
+        process.exit(1);
+    }
+    var thing = posParams[0];
+    if (thing === 'notes') {
+        notesParser(argv, function() {
+            console.log("done notes parsing");
+            process.exit(0);
+        });
+    } else if (thing === 'changesets') {
+        changesetParser(argv, function() {
+            console.log("done changeset parsing");
+            process.exit(0);
+        });
+    } else {
+        console.error(USAGE);
+        process.exit(1);
+    }
 }
