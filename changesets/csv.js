@@ -60,7 +60,7 @@ function saveChangeset(changeset, next) {
         ];
         tags.push(tagRow);
     });
-    if (changesets.length > 200000) {
+    if (changesets.length > 10000) {
         writeToCSV(function() {
             next();
         });
