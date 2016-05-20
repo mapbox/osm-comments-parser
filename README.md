@@ -19,13 +19,17 @@ Setup environment variables required for the project:
 
 ### Run
 
-Currently, in a node shell:
+In a node shell:
 
     var notesParser = require('./notes');
     notesParser({filename: '/path/to/notes-xml'});
 
     var changesetParser = require('./changesets');
     changesetParser({filename: '/path/to/changeset-xml'});
+
+From the terminal:
+
+    node index.js <notes|changesets> --filename=/path/to/xml/file
 
 
 ### Test
