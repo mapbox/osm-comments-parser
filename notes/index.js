@@ -57,9 +57,9 @@ function parseNotes(xmlFilename, client, callback) {
             currentNote = null;
         } else if (tagName === 'comment') {
             currentComment = null;
-            next();
+            setImmediate(next);
         } else {
-            next();
+            setImmediate(next);
         }
     });
     saxStream.hookSync('text', function(text) {
