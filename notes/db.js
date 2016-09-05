@@ -32,7 +32,6 @@ function saveNote(client, note, next) {
             console.log('error selecting note', err);
         }
         if (result.rows.length > 0) {
-            console.log('note exists...');
             var dbCreatedAt = result.rows[0].created_at;
             var dbClosedAt = result.rows[0].closed_at;
             var xmlCreatedAt = new Date(createdAt);
