@@ -14,6 +14,7 @@ module.exports = {};
 module.exports.saveNote = saveNote;
 
 function saveNote(client, note, next) {
+    console.log('saveNote...');
     var attribs = note.attributes;
     var id = attribs.ID;
     var lat = parseFloat(attribs.LAT);
@@ -32,6 +33,7 @@ function saveNote(client, note, next) {
             console.log('error selecting note', err);
         }
         if (result.rows.length > 0) {
+            console.log('note exists...');
             var dbCreatedAt = result.rows[0].created_at;
             var dbClosedAt = result.rows[0].closed_at;
             var xmlCreatedAt = new Date(createdAt);
@@ -39,8 +41,10 @@ function saveNote(client, note, next) {
             var dbClosedAtISOString = dbClosedAt ? dbClosedAt.toISOString() : null;
             var xmlClosedAtISOString = xmlClosedAt ? xmlClosedAt.toISOString() : null;
             if (dbCreatedAt.toISOString() !== xmlCreatedAt.toISOString() || dbClosedAtISOString !== xmlClosedAtISOString) {
+                console.log('updateNote...');
                 updateNote(client, params, note, next, saveComments);
             } else {
+                console.log('save comments...');
                 saveComments(client, note, next);
             }
         } else {
@@ -87,13 +91,16 @@ function insertNote(client, params, note, next, callback) {
 function saveComments(client, note, next) {
     var comments = note.comments;
     if (comments.length === 0) {
-        next();
+        return next();
     }
+
     var q = queue(1);
     comments.forEach(function(comment) {
+        console.log('comments # ', comments.length);
         q.defer(saveComment, client, comment, note);
     });
     q.awaitAll(function() {
+        console.log('done saving note and comments.');
         next();
     });
 }
