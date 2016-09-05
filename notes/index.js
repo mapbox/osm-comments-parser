@@ -42,8 +42,6 @@ function parseNotes(xmlFilename, client, callback) {
     var currentNote, currentComment;
     saxStream.hookSync('opentag', function(node) {
         var tagName = node.name.toLowerCase();
-        console.log('OPEN TAG', tagName);
-        console.log('node', node);
         if (tagName === 'note') {
             currentNote = node;
             currentNote.comments = [];
@@ -54,23 +52,16 @@ function parseNotes(xmlFilename, client, callback) {
     });
     saxStream.hookAsync('closetag', function(next, tagName) {
         tagName = tagName.toLowerCase();
-        console.log('CLOSE TAG', tagName);
         if (tagName === 'note') {
             db.saveNote(client, currentNote, function () {
-                console.log('saved note!!!!');
                 currentNote = null;
                 next();
             });
-            // db.saveNote(client, currentNote, next);
-            // currentNote = null;
-            // next();
         } else if (tagName === 'comment') {
             currentComment = null;
             next();
-            // setImmediate(next);
         } else {
             next();
-            // setImmediate(next);
         }
     });
     saxStream.hookSync('text', function(text) {
