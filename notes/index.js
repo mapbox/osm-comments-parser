@@ -53,13 +53,15 @@ function parseNotes(xmlFilename, client, callback) {
     saxStream.hookAsync('closetag', function(next, tagName) {
         tagName = tagName.toLowerCase();
         if (tagName === 'note') {
-            db.saveNote(client, currentNote, next);
-            currentNote = null;
+            db.saveNote(client, currentNote, function () {
+                currentNote = null;
+                next();
+            });
         } else if (tagName === 'comment') {
             currentComment = null;
-            setImmediate(next);
+            next();
         } else {
-            setImmediate(next);
+            next();
         }
     });
     saxStream.hookSync('text', function(text) {

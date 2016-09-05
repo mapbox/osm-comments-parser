@@ -87,13 +87,15 @@ function insertNote(client, params, note, next, callback) {
 function saveComments(client, note, next) {
     var comments = note.comments;
     if (comments.length === 0) {
-        next();
+        return next();
     }
+
     var q = queue(1);
     comments.forEach(function(comment) {
         q.defer(saveComment, client, comment, note);
     });
     q.awaitAll(function() {
+        console.log('done saving note and comments.');
         next();
     });
 }
@@ -101,6 +103,7 @@ function saveComments(client, note, next) {
 function saveComment(client, comment, note, callback) {
     var noteID = note.attributes.ID;
     var attribs = comment.attributes;
+    attribs.note_id = note.attributes.ID;
     var action = attribs.ACTION;
     var timestamp = attribs.TIMESTAMP;
     var commentText = comment.text || '';
