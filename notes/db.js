@@ -95,7 +95,6 @@ function saveComments(client, note, next) {
         q.defer(saveComment, client, comment, note);
     });
     q.awaitAll(function() {
-        console.log('done saving note and comments.');
         next();
     });
 }
