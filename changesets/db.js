@@ -44,8 +44,8 @@ function saveChangeset(client, changeset, next) {
             var numChanges = attribs.NUM_CHANGES;
             var discussionCount = attribs.COMMENTS_COUNT;
             var isUnreplied = util.getIsUnreplied(userID, changeset.comments) ? 'true' : 'false';
-            var insertQuery = 'INSERT INTO changesets (id, created_at, closed_at, is_open, user_id, bbox, num_changes, discussion_count, is_unreplied) VALUES ($1, $2, $3, $4, $5, ST_MakeEnvelope($6, $7, $8, $9, 4326), $10, $11, $12)';
-            var params = [id, createdAt, closedAt, isOpen, userID, attribs.MIN_LON, attribs.MIN_LAT, attribs.MAX_LON, attribs.MAX_LAT, numChanges, discussionCount, isUnreplied];
+            var insertQuery = 'INSERT INTO changesets (id, created_at, closed_at, is_open, user_id, username, bbox, num_changes, discussion_count, is_unreplied) VALUES ($1, $2, $3, $4, $5, $6, ST_MakeEnvelope($7, $8, $9, $10, 4326), $11, $12, $13)';
+            var params = [id, createdAt, closedAt, isOpen, userID, userName, attribs.MIN_LON, attribs.MIN_LAT, attribs.MAX_LON, attribs.MAX_LAT, numChanges, discussionCount, isUnreplied];
             dbUsers.saveUser(client, userID, userName, function() {
                 client.query(insertQuery, params, function(err) {
                     if (err) {

@@ -29,6 +29,7 @@ function saveChangeset(changeset, next) {
         attribs.CLOSED_AT ? attribs.CLOSED_AT : null,
         attribs.OPEN,
         attribs.UID,
+        attribs.USER,
         attribs.NUM_CHANGES,
         util.getIsUnreplied(attribs.UID, changeset.comments) ? 'true' : 'false',
         attribs.MIN_LON,

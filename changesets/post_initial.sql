@@ -1,4 +1,4 @@
-\COPY changesets(id, created_at, closed_at, is_open, user_id, num_changes, is_unreplied, min_lon, min_lat, max_lon, max_lat) FROM 'csv/changesets.csv' DELIMITERS ',' CSV;
+\COPY changesets(id, created_at, closed_at, is_open, user_id, username, num_changes, is_unreplied, min_lon, min_lat, max_lon, max_lat) FROM 'csv/changesets.csv' DELIMITERS ',' CSV;
 
 UPDATE changesets SET bbox = ST_MakeEnvelope(min_lon, min_lat, max_lon, max_lat, 4326);
 

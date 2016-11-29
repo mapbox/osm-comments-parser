@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS changesets (
     closed_at timestamptz NULL,
     is_open boolean,
     user_id integer,
+    username text,
     min_lon float NULL,
     min_lat float NULL,
     max_lon float NULL,
