@@ -30,6 +30,7 @@ function saveChangeset(changeset, next) {
         attribs.OPEN,
         attribs.UID,
         attribs.NUM_CHANGES,
+        util.getIsUnreplied(attribs.UID, changeset.comments) ? 'true' : 'false',
         attribs.MIN_LON,
         attribs.MIN_LAT,
         attribs.MAX_LON,

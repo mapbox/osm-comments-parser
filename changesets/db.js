@@ -3,6 +3,7 @@
 var dbUsers = require('../users/db');
 var helpers = require('../helpers');
 var queue = require('queue-async');
+var util = require('./util');
 
 module.exports = {};
 
@@ -42,8 +43,9 @@ function saveChangeset(client, changeset, next) {
             var userName = attribs.USER;
             var numChanges = attribs.NUM_CHANGES;
             var discussionCount = attribs.COMMENTS_COUNT;
-            var insertQuery = 'INSERT INTO changesets (id, created_at, closed_at, is_open, user_id, bbox, num_changes, discussion_count) VALUES ($1, $2, $3, $4, $5, ST_MakeEnvelope($6, $7, $8, $9, 4326), $10, $11)';
-            var params = [id, createdAt, closedAt, isOpen, userID, attribs.MIN_LON, attribs.MIN_LAT, attribs.MAX_LON, attribs.MAX_LAT, numChanges, discussionCount];
+            var isUnreplied = util.getIsUnreplied(userID, changeset.comments) ? 'true' : 'false';
+            var insertQuery = 'INSERT INTO changesets (id, created_at, closed_at, is_open, user_id, bbox, num_changes, discussion_count, is_unreplied) VALUES ($1, $2, $3, $4, $5, ST_MakeEnvelope($6, $7, $8, $9, 4326), $10, $11, $12)';
+            var params = [id, createdAt, closedAt, isOpen, userID, attribs.MIN_LON, attribs.MIN_LAT, attribs.MAX_LON, attribs.MAX_LAT, numChanges, discussionCount, isUnreplied];
             dbUsers.saveUser(client, userID, userName, function() {
                 client.query(insertQuery, params, function(err) {
                     if (err) {
@@ -61,6 +63,7 @@ function saveChangeset(client, changeset, next) {
         }
     });
 }
+
 
 function saveTags(client, changeset, callback) {
     if (changeset.tags.length === 0) {

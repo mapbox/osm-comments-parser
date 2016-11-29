@@ -34,7 +34,8 @@ CREATE TABLE IF NOT EXISTS changesets (
     max_lat float NULL,
     bbox geometry(POLYGON, 4326) NULL,
     num_changes integer,
-    discussion_count integer
+    discussion_count integer,
+    is_unreplied boolean
 );
 
 CREATE TABLE IF NOT EXISTS changeset_tags (

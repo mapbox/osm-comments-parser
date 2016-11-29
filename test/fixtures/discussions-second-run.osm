@@ -84,10 +84,11 @@
   <tag k="locale" v="ar"/>
   <tag k="created_by" v="iD 1.7.4"/>
   <tag k="imagery_used" v="Bing"/>
- </changeset>
- <discussion>
+  <discussion>
    <comment uid="44660" user="bjoern_m" date="2015-11-19T22:55:00Z">
     <text>Test discussion item.</text>
    </comment>
   </discussion>
+ </changeset>
+
 </osm>
