@@ -23,6 +23,7 @@ function saveChangeset(changeset, next) {
     if (attribs.OPEN === 'true' || attribs.COMMENTS_COUNT === '0') {
         return next();
     }
+    console.log("saving " + attribs.ID);
     var tags = util.getChangesetTags(changeset.tags);
     var row = [
         attribs.ID,
@@ -82,7 +83,7 @@ function writeToCSV(callback) {
         var outStream = fs.createWriteStream(changesetsFile, {'flags': 'a'});
         outStream.write(data, function() {
             outStream.end();
-            writeTags(callback);
+            writeComments(callback);
         });
     });
     changesets.forEach(function(row) {
@@ -149,7 +150,7 @@ function writeUsers(callback) {
         outStream.write(data, function() {
             outStream.end();
             callback();
-        });;
+        });
     });
     usersArray.forEach(function(row) {
         stringifier.write(row);
