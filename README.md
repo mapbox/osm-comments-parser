@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/mapbox/osm-comments-parser.svg?style=svg)](https://circleci.com/gh/mapbox/osm-comments-parser)
+
 ### Notes and comments parser
 
 Reads XML files and saves into database.
