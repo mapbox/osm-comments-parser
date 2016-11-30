@@ -29,6 +29,10 @@ CREATE TABLE IF NOT EXISTS changesets (
     is_open boolean,
     user_id integer,
     username text,
+    comment text NULL,
+    source text NULL,
+    created_by text NULL,
+    imagery_used text NULL,
     min_lon float NULL,
     min_lat float NULL,
     max_lon float NULL,
@@ -37,13 +41,6 @@ CREATE TABLE IF NOT EXISTS changesets (
     num_changes integer,
     discussion_count integer,
     is_unreplied boolean
-);
-
-CREATE TABLE IF NOT EXISTS changeset_tags (
-    id uuid PRIMARY KEY,
-    changeset_id integer,
-    key text,
-    value text
 );
 
 CREATE TABLE IF NOT EXISTS changeset_comments (

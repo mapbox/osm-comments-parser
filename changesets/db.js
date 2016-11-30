@@ -44,8 +44,9 @@ function saveChangeset(client, changeset, next) {
             var numChanges = attribs.NUM_CHANGES;
             var discussionCount = attribs.COMMENTS_COUNT;
             var isUnreplied = util.getIsUnreplied(userID, changeset.comments) ? 'true' : 'false';
-            var insertQuery = 'INSERT INTO changesets (id, created_at, closed_at, is_open, user_id, username, bbox, num_changes, discussion_count, is_unreplied) VALUES ($1, $2, $3, $4, $5, $6, ST_MakeEnvelope($7, $8, $9, $10, 4326), $11, $12, $13)';
-            var params = [id, createdAt, closedAt, isOpen, userID, userName, attribs.MIN_LON, attribs.MIN_LAT, attribs.MAX_LON, attribs.MAX_LAT, numChanges, discussionCount, isUnreplied];
+            var tags = util.getChangesetTags(changeset.tags);
+            var insertQuery = 'INSERT INTO changesets (id, created_at, closed_at, is_open, user_id, username, comment, source, created_by, imagery_used, bbox, num_changes, discussion_count, is_unreplied) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, ST_MakeEnvelope($11, $12, $13, $14, 4326), $15, $16, $17)';
+            var params = [id, createdAt, closedAt, isOpen, userID, userName, tags.comment, tags.source, tags.created_by, tags.imagery_used, attribs.MIN_LON, attribs.MIN_LAT, attribs.MAX_LON, attribs.MAX_LAT, numChanges, discussionCount, isUnreplied];
             dbUsers.saveUser(client, userID, userName, function() {
                 client.query(insertQuery, params, function(err) {
                     if (err) {
@@ -53,7 +54,6 @@ function saveChangeset(client, changeset, next) {
                         return;
                     }
                     var q = queue(2);
-                    q.defer(saveTags, client, changeset);
                     q.defer(saveComments, client, changeset);
                     q.awaitAll(function() {
                         next();
@@ -64,37 +64,6 @@ function saveChangeset(client, changeset, next) {
     });
 }
 
-
-function saveTags(client, changeset, callback) {
-    if (changeset.tags.length === 0) {
-        callback();
-        return;
-    }
-    var q = queue(3);
-    var tags = changeset.tags;
-    tags.forEach(function(tag) {
-        q.defer(saveTag, client, changeset, tag);
-    });
-    q.awaitAll(function() {
-        callback();
-    });
-}
-
-function saveTag(client, changeset, tag, callback) {
-    var changesetID = changeset.attributes.ID;
-    var attribs = tag.attributes;
-    var tagKey = attribs.K;
-    var tagValue = attribs.V;
-    attribs.changesetID = changesetID;
-    var md5 = helpers.getHash(JSON.stringify(attribs));
-    var insertQuery = 'INSERT INTO changeset_tags (id, changeset_id, key, value) VALUES ($1, $2, $3, $4)';
-    client.query(insertQuery, [md5, changesetID, tagKey, tagValue], function(err) {
-        if (err) {
-            console.log('error inserting tag', err);
-        }
-        callback();
-    });
-}
 
 function saveComments(client, changeset, callback) {
     if (changeset.comments.length === 0) {

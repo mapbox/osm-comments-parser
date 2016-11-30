@@ -12,14 +12,7 @@ CREATE INDEX changesets_user_id_idx ON changesets(user_id);
 
 CREATE INDEX changesets_discussion_count_idx ON changesets(discussion_count);
 
-CREATE INDEX changeset_tags_key_idx ON changeset_tags(key);
-
-CREATE INDEX changeset_tags_value_tsvector_idex ON changeset_tags USING gin(to_tsvector('english', value));
-
--- Separate B-Tree index for values since we sometimes will do exact match and sometimes tsquery searches
-CREATE INDEX changeset_tags_value_idx ON changeset_tags(value);
-
-CREATE INDEX changeset_tags_changeset_id_idx ON changeset_tags(changeset_id);
+CREATE INDEX changesets_comment_tsvector_idx ON changesets USING gin(to_tsvector('english', comment));
 
 CREATE INDEX changeset_comments_changeset_id_idx ON changeset_comments(changeset_id);
 
