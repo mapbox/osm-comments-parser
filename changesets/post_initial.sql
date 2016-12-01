@@ -4,4 +4,4 @@ UPDATE changesets SET bbox = ST_MakeEnvelope(min_lon, min_lat, max_lon, max_lat,
 
 \COPY users(id,name) FROM 'csv/users.csv' DELIMITERS ',' CSV;
 
-\COPY changeset_comments(id, changeset_id, user_id, timestamp, comment) FROM 'csv/comments.csv' DELIMITERS ',' CSV;
+\COPY changeset_comments(id, changeset_id, user_id, username, timestamp, comment) FROM 'csv/comments.csv' DELIMITERS ',' CSV;

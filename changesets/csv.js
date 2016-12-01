@@ -52,6 +52,7 @@ function saveChangeset(changeset, next) {
             helpers.getHash(JSON.stringify(comment)),
             comment.changesetID,
             attribs.UID ? attribs.UID : null,
+            attribs.USER ? attribs.USER : null,
             attribs.DATE,
             comment.text
         ];
