@@ -2,6 +2,7 @@ var helpers = require('../helpers');
 var stringify = require('csv').stringify;
 var fs = require('fs');
 var path = require('path');
+var util = require('./util');
 
 module.exports = {};
 
@@ -16,20 +17,26 @@ var users = {};
 
 var changesetsFile = path.join('csv', 'changesets.csv');
 var commentsFile = path.join('csv', 'comments.csv');
-var tagsFile = path.join('csv', 'tags.csv');
 
 function saveChangeset(changeset, next) {
     var attribs = changeset.attributes;
     if (attribs.OPEN === 'true' || attribs.COMMENTS_COUNT === '0') {
         return next();
     }
+    var tags = util.getChangesetTags(changeset.tags);
     var row = [
         attribs.ID,
         attribs.CREATED_AT,
         attribs.CLOSED_AT ? attribs.CLOSED_AT : null,
         attribs.OPEN,
         attribs.UID,
+        attribs.USER,
+        tags.comment,
+        tags.source,
+        tags.created_by,
+        tags.imagery_used,
         attribs.NUM_CHANGES,
+        util.getIsUnreplied(attribs.UID, changeset.comments) ? 'true' : 'false',
         attribs.MIN_LON,
         attribs.MIN_LAT,
         attribs.MAX_LON,
@@ -44,22 +51,13 @@ function saveChangeset(changeset, next) {
             helpers.getHash(JSON.stringify(comment)),
             comment.changesetID,
             attribs.UID ? attribs.UID : null,
+            attribs.USER ? attribs.USER : null,
             attribs.DATE,
             comment.text
         ];
         comments.push(commentRow);
     });
-    changeset.tags.forEach(function(tag) {
-        var attribs = tag.attributes;
-        attribs.changesetID = changeset.attributes.ID;
-        var tagRow = [
-            helpers.getHash(JSON.stringify(attribs)),
-            attribs.changesetID,
-            attribs.K,
-            attribs.V
-        ];
-        tags.push(tagRow);
-    });
+
     if (changesets.length > 10000) {
         writeToCSV(function() {
             next();
@@ -85,7 +83,7 @@ function writeToCSV(callback) {
         var outStream = fs.createWriteStream(changesetsFile, {'flags': 'a'});
         outStream.write(data, function() {
             outStream.end();
-            writeTags(callback);
+            writeComments(callback);
         });
     });
     changesets.forEach(function(row) {
@@ -96,31 +94,6 @@ function writeToCSV(callback) {
     return;
 }
 
-function writeTags(callback) {
-    var data = '';
-    var stringifier = stringify();
-    stringifier.on('readable', function(){
-      while(row = stringifier.read()){
-        data += row;
-      }
-    });
-    stringifier.on('error', function(err){
-      consol.log(err.message);
-    });
-    stringifier.on('finish', function(){
-        var outStream = fs.createWriteStream(tagsFile, {'flags': 'a'});
-        outStream.write(data, function() {
-            outStream.end();
-            writeComments(callback);
-        });
-    });
-    tags.forEach(function(row) {
-        stringifier.write(row);
-    });
-    stringifier.end();
-    tags = [];
-    return;    
-}
 
 function writeComments(callback) {
     if (comments.length === 0) {
@@ -177,7 +150,7 @@ function writeUsers(callback) {
         outStream.write(data, function() {
             outStream.end();
             callback();
-        });;
+        });
     });
     usersArray.forEach(function(row) {
         stringifier.write(row);

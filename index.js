@@ -121,12 +121,12 @@ if (!module.parent) {
     var thing = posParams[0];
     if (thing === 'notes') {
         notesParser(argv, function() {
-            console.log("done notes parsing");
+            console.log('done notes parsing');
             process.exit(0);
         });
     } else if (thing === 'changesets') {
         changesetParser(argv, function() {
-            console.log("done changeset parsing");
+            console.log('done changeset parsing');
             process.exit(0);
         });
     } else {

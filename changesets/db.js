@@ -3,6 +3,7 @@
 var dbUsers = require('../users/db');
 var helpers = require('../helpers');
 var queue = require('queue-async');
+var util = require('./util');
 
 module.exports = {};
 
@@ -42,8 +43,10 @@ function saveChangeset(client, changeset, next) {
             var userName = attribs.USER;
             var numChanges = attribs.NUM_CHANGES;
             var discussionCount = attribs.COMMENTS_COUNT;
-            var insertQuery = 'INSERT INTO changesets (id, created_at, closed_at, is_open, user_id, bbox, num_changes, discussion_count) VALUES ($1, $2, $3, $4, $5, ST_MakeEnvelope($6, $7, $8, $9, 4326), $10, $11)';
-            var params = [id, createdAt, closedAt, isOpen, userID, attribs.MIN_LON, attribs.MIN_LAT, attribs.MAX_LON, attribs.MAX_LAT, numChanges, discussionCount];
+            var isUnreplied = util.getIsUnreplied(userID, changeset.comments) ? 'true' : 'false';
+            var tags = util.getChangesetTags(changeset.tags);
+            var insertQuery = 'INSERT INTO changesets (id, created_at, closed_at, is_open, user_id, username, comment, source, created_by, imagery_used, bbox, num_changes, discussion_count, is_unreplied) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, ST_MakeEnvelope($11, $12, $13, $14, 4326), $15, $16, $17)';
+            var params = [id, createdAt, closedAt, isOpen, userID, userName, tags.comment, tags.source, tags.created_by, tags.imagery_used, attribs.MIN_LON, attribs.MIN_LAT, attribs.MAX_LON, attribs.MAX_LAT, numChanges, discussionCount, isUnreplied];
             dbUsers.saveUser(client, userID, userName, function() {
                 client.query(insertQuery, params, function(err) {
                     if (err) {
@@ -51,7 +54,6 @@ function saveChangeset(client, changeset, next) {
                         return;
                     }
                     var q = queue(2);
-                    q.defer(saveTags, client, changeset);
                     q.defer(saveComments, client, changeset);
                     q.awaitAll(function() {
                         next();
@@ -62,36 +64,6 @@ function saveChangeset(client, changeset, next) {
     });
 }
 
-function saveTags(client, changeset, callback) {
-    if (changeset.tags.length === 0) {
-        callback();
-        return;
-    }
-    var q = queue(3);
-    var tags = changeset.tags;
-    tags.forEach(function(tag) {
-        q.defer(saveTag, client, changeset, tag);
-    });
-    q.awaitAll(function() {
-        callback();
-    });
-}
-
-function saveTag(client, changeset, tag, callback) {
-    var changesetID = changeset.attributes.ID;
-    var attribs = tag.attributes;
-    var tagKey = attribs.K;
-    var tagValue = attribs.V;
-    attribs.changesetID = changesetID;
-    var md5 = helpers.getHash(JSON.stringify(attribs));
-    var insertQuery = 'INSERT INTO changeset_tags (id, changeset_id, key, value) VALUES ($1, $2, $3, $4)';
-    client.query(insertQuery, [md5, changesetID, tagKey, tagValue], function(err) {
-        if (err) {
-            console.log('error inserting tag', err);
-        }
-        callback();
-    });
-}
 
 function saveComments(client, changeset, callback) {
     if (changeset.comments.length === 0) {
@@ -112,7 +84,7 @@ function saveComment(client, changeset, comment, callback) {
     // console.log('saving comment', comment);
     var changesetID = changeset.attributes.ID;
     var userID = comment.attributes.UID || null;
-    var userName = comment.attributes.USER || null;
+    var username = comment.attributes.USER || null;
     var timestamp = comment.attributes.DATE;
     comment.changesetID = changesetID;
     var md5 = helpers.getHash(JSON.stringify(comment));
@@ -124,9 +96,9 @@ function saveComment(client, changeset, comment, callback) {
         if (result.rows.length > 0) {
             callback();
         } else {
-            dbUsers.saveUser(client, userID, userName, function() {
-                var insertQuery = 'INSERT INTO changeset_comments (id, changeset_id, user_id, timestamp, comment) VALUES ($1, $2, $3, $4, $5)';
-                client.query(insertQuery, [md5, changesetID, userID, timestamp, comment.text], function(err) {
+            dbUsers.saveUser(client, userID, username, function() {
+                var insertQuery = 'INSERT INTO changeset_comments (id, changeset_id, user_id, username, timestamp, comment) VALUES ($1, $2, $3, $4, $5, $6)';
+                client.query(insertQuery, [md5, changesetID, userID, username, timestamp, comment.text], function(err) {
                     if (err) {
                         console.log('error inserting comment', err);
                     }

@@ -77,7 +77,7 @@
         "sql": "SELECT id FROM note_comments WHERE note_id=4 AND action='closed'",
         "expected": [
             {
-                "id": "5b995e4f-b62c-1f6b-6969-da54a07f5fc9"
+                "id": "d5797335-92a6-bb23-07c9-300d9a6ea593"
             }
         ]
     }

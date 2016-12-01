@@ -63,29 +63,20 @@
         ]
     },
     {
-        "description": "checks that tag count is correct",
-        "sql": "SELECT count(id) FROM changeset_tags WHERE changeset_id=34721793",
-        "expected": [
-            {
-                "count": "3"
-            }
-        ]
-    },
-    {
-        "description": "checks that tag key values are being saved correctly",
-        "sql": "SELECT value FROM changeset_tags WHERE changeset_id=34721793 AND key='source'",
-        "expected": [
-            {
-                "value": "Bing"
-            }
-        ]
-    },
-    {
         "description": "checks that changeset user has been saved correctly",
         "sql": "SELECT name FROM users WHERE id=344561",
         "expected": [
             {
                 "name": "FahRadler"
+            }
+        ]
+    },
+    {
+        "description": "checks changeset comment is being saved correctly",
+        "sql": "SELECT comment FROM changesets WHERE id=34721793",
+        "expected": [
+            {
+                "comment": "Fernwärme ergänzt"
             }
         ]
     },
