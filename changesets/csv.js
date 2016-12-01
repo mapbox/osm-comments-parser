@@ -23,7 +23,6 @@ function saveChangeset(changeset, next) {
     if (attribs.OPEN === 'true' || attribs.COMMENTS_COUNT === '0') {
         return next();
     }
-    console.log("saving " + attribs.ID);
     var tags = util.getChangesetTags(changeset.tags);
     var row = [
         attribs.ID,
