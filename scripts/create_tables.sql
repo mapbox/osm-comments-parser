@@ -47,6 +47,7 @@ CREATE TABLE IF NOT EXISTS changeset_comments (
     id uuid PRIMARY KEY,
     changeset_id integer,
     user_id integer NULL,
+    username TEXT NULL,
     timestamp timestamptz,
     comment text 
 );
