@@ -10,6 +10,8 @@ CREATE INDEX changesets_num_changes_idx ON changesets(num_changes);
 
 CREATE INDEX changesets_user_id_idx ON changesets(user_id);
 
+CREATE INDEX changesets_username_idx ON changesets(username);
+
 CREATE INDEX changesets_discussion_count_idx ON changesets(discussion_count);
 
 CREATE INDEX changesets_comment_tsvector_idx ON changesets USING gin(to_tsvector('english', comment));
@@ -17,6 +19,8 @@ CREATE INDEX changesets_comment_tsvector_idx ON changesets USING gin(to_tsvector
 CREATE INDEX changeset_comments_changeset_id_idx ON changeset_comments(changeset_id);
 
 CREATE INDEX changeset_comments_user_id_idx ON changeset_comments(user_id);
+
+CREATE INDEX changeset_comments_username_idx ON changeset_comments(username);
 
 CREATE INDEX changeset_comments_timestamp_idx ON changeset_comments(timestamp);
 
