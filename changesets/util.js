@@ -3,6 +3,9 @@ module.exports.getIsUnreplied = getIsUnreplied;
 module.exports.getChangesetTags = getChangesetTags;
 
 function getIsUnreplied(uid, comments) {
+    if (comments.length === 0) {
+        return false;
+    }
     var lastComment = comments.slice(-1)[0];
     if (lastComment.attributes.UID === uid) {
         return false;
