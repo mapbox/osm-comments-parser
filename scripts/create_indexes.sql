@@ -8,6 +8,8 @@ CREATE INDEX changesets_bbox_idx ON changesets USING GIST(bbox);
 
 CREATE INDEX changesets_num_changes_idx ON changesets(num_changes);
 
+CREATE INDEX changesets_is_unreplied_idx ON changesets(is_unreplied);
+
 CREATE INDEX changesets_user_id_idx ON changesets(user_id);
 
 CREATE INDEX changesets_username_idx ON changesets(username);

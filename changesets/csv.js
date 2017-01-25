@@ -36,6 +36,7 @@ function saveChangeset(changeset, next) {
         tags.created_by,
         tags.imagery_used,
         attribs.NUM_CHANGES,
+        attribs.DISCUSSION_COUNT,
         util.getIsUnreplied(attribs.UID, changeset.comments) ? 'true' : 'false',
         attribs.MIN_LON,
         attribs.MIN_LAT,
@@ -178,7 +179,8 @@ function addUser(id, name, attribs) {
     user.name = name;
     user.changesetCount++;
     user.numChanges += Number(attribs.NUM_CHANGES);
-
-
+    if (new Date(user.firstEdit) > new Date(attribs.CREATED_AT)) {
+        user.firstEdit = attribs.CREATED_AT;
+    }
     return;
 }

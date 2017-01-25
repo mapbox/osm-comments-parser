@@ -96,12 +96,14 @@ function saveComment(client, changeset, comment, callback) {
         if (result.rows.length > 0) {
             callback();
         } else {
-            var insertQuery = 'INSERT INTO changeset_comments (id, changeset_id, user_id, username, timestamp, comment) VALUES ($1, $2, $3, $4, $5, $6)';
-            client.query(insertQuery, [md5, changesetID, userID, username, timestamp, comment.text], function(err) {
-                if (err) {
-                    console.log('error inserting comment', err);
-                }
-                callback();
+            dbUsers.saveUser(client, userID, username, function() {
+                var insertQuery = 'INSERT INTO changeset_comments (id, changeset_id, user_id, username, timestamp, comment) VALUES ($1, $2, $3, $4, $5, $6)';
+                client.query(insertQuery, [md5, changesetID, userID, username, timestamp, comment.text], function(err) {
+                    if (err) {
+                        console.log('error inserting comment', err);
+                    }
+                    callback();
+                });
             });
         }
     });

@@ -80,4 +80,11 @@
   <tag k="created_by" v="iD 1.7.4"/>
   <tag k="imagery_used" v="Bing"/>
  </changeset>
+ <changeset id="34721800" created_at="2015-11-18T22:23:41Z" closed_at="2015-11-18T22:23:42Z" open="false" user="wanda987" uid="3318999" min_lat="13.2572198" min_lon="44.2095235" max_lat="13.2572198" max_lon="44.2095235" num_changes="10" comments_count="0">
+  <tag k="host" v="https://www.openstreetmap.org/id"/>
+  <tag k="locale" v="ar"/>
+  <tag k="created_by" v="iD 1.7.4"/>
+  <tag k="imagery_used" v="Bing"/>
+ </changeset>
+
 </osm>
