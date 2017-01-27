@@ -20,7 +20,7 @@ var commentsFile = path.join('csv', 'comments.csv');
 
 function saveChangeset(changeset, next) {
     var attribs = changeset.attributes;
-    if (attribs.OPEN === 'true' || attribs.COMMENTS_COUNT === '0') {
+    if (attribs.OPEN === 'true') {
         return next();
     }
     var tags = util.getChangesetTags(changeset.tags);
@@ -36,6 +36,7 @@ function saveChangeset(changeset, next) {
         tags.created_by,
         tags.imagery_used,
         attribs.NUM_CHANGES,
+        attribs.DISCUSSION_COUNT,
         util.getIsUnreplied(attribs.UID, changeset.comments) ? 'true' : 'false',
         attribs.MIN_LON,
         attribs.MIN_LAT,
@@ -43,7 +44,7 @@ function saveChangeset(changeset, next) {
         attribs.MAX_LAT
     ];
     changesets.push(row);
-    addUser(attribs.UID, attribs.USER);
+    addUser(attribs.UID, attribs.USER, attribs);
     changeset.comments.forEach(function(comment) {
         comment.changesetID = changeset.attributes.ID;
         var attribs = comment.attributes;
@@ -131,7 +132,10 @@ function writeUsers(callback) {
     for (var key in users) {
         var user = [
             key,
-            users[key]
+            users[key].name,
+            users[key].firstEdit,
+            users[key].changesetCount,
+            users[key].numChanges
         ];
         usersArray.push(user);
     }
@@ -156,12 +160,27 @@ function writeUsers(callback) {
         stringifier.write(row);
     });
     stringifier.end();
-    return;    
+    return;
 }
 
-function addUser(id, name) {
+function addUser(id, name, attribs) {
+    if (!id) { // really old changesets are sometimes anonymous
+        return;
+    }
     if (!users.hasOwnProperty(id)) {
-        users[id] = name;
+        users[id] = {
+            'name': name,
+            'firstEdit': attribs.CREATED_AT,
+            'changesetCount': 0,
+            'numChanges': 0
+        };
+    }
+    var user = users[id];
+    user.name = name;
+    user.changesetCount++;
+    user.numChanges += Number(attribs.NUM_CHANGES);
+    if (new Date(user.firstEdit) > new Date(attribs.CREATED_AT)) {
+        user.firstEdit = attribs.CREATED_AT;
     }
     return;
 }

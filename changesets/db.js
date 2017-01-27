@@ -13,7 +13,7 @@ function saveChangeset(client, changeset, next) {
     var attribs = changeset.attributes;
 
     // if changeset is still open, don't save it
-    if (attribs.OPEN === 'true' || attribs.COMMENTS_COUNT === '0') {
+    if (attribs.OPEN === 'true') {
         return next();
     }
 
@@ -47,7 +47,7 @@ function saveChangeset(client, changeset, next) {
             var tags = util.getChangesetTags(changeset.tags);
             var insertQuery = 'INSERT INTO changesets (id, created_at, closed_at, is_open, user_id, username, comment, source, created_by, imagery_used, bbox, num_changes, discussion_count, is_unreplied) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, ST_MakeEnvelope($11, $12, $13, $14, 4326), $15, $16, $17)';
             var params = [id, createdAt, closedAt, isOpen, userID, userName, tags.comment, tags.source, tags.created_by, tags.imagery_used, attribs.MIN_LON, attribs.MIN_LAT, attribs.MAX_LON, attribs.MAX_LAT, numChanges, discussionCount, isUnreplied];
-            dbUsers.saveUser(client, userID, userName, function() {
+            dbUsers.saveUser(client, userID, userName, attribs, function() {
                 client.query(insertQuery, params, function(err) {
                     if (err) {
                         console.log('error inserting changeset', err);
