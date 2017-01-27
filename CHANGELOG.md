@@ -1,3 +1,8 @@
+### Version 3.0.0
+
+ - Adds metadata for users
+ - Parses all changesets, not just those with comments
+
 ### Version 2.0.0
 
  - Significant changes to DB schema: https://github.com/mapbox/osm-comments-parser/issues/21
