@@ -54,3 +54,16 @@ CREATE TABLE IF NOT EXISTS changeset_comments (
     timestamp timestamptz,
     comment text 
 );
+
+CREATE TABLE IF NOT EXISTS stats (
+    id integer PRIMARY KEY,
+    change_at timestamptz,
+    uid integer REFERENCES users (id) NULL,
+    nodes jsonb NULL,
+    ways jsonb NULL,
+    relations jsonb NULL,
+    changesets integer NULL,
+    tags_created jsonb NULL,
+    tags_modified jsonb NULL,
+    tags_deleted jsonb NULL
+);

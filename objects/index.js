@@ -24,6 +24,6 @@ function processFile(options, callback) {
 
 function parseObjetcs(options, client, callback) {
   counter(options, function(users) {
-    console.log(users);
+    console.log(JSON.stringify(users, null, 2));
   });
 }
