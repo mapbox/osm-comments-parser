@@ -2,7 +2,7 @@
 
 var fs = require('fs');
 var pg = require('pg');
-var decompres = require('./decompres');
+var decompres = require('./decompress');
 var counter = require('./counter');
 
 module.exports = processFile;
