@@ -81,17 +81,15 @@ function countVersion(type, user, obj) {
 
 function countTags(users, obj) {
 	_.each(obj.tags(), function(v, k) {
-		if (tags[k] && (tags[k][v] || tags[k].all)) {
-			if (users[obj.uid].tags[k]) {
-				if (users[obj.uid].tags[k][v]) {
-					users[obj.uid].tags[k][v] = users[obj.uid].tags[k][v] + 1;
-				} else {
-					users[obj.uid].tags[k][v] = 1;
-				}
+		if (users[obj.uid].tags[k]) {
+			if (users[obj.uid].tags[k][v]) {
+				users[obj.uid].tags[k][v] = users[obj.uid].tags[k][v] + 1;
 			} else {
-				users[obj.uid].tags[k] = {};
 				users[obj.uid].tags[k][v] = 1;
 			}
+		} else {
+			users[obj.uid].tags[k] = {};
+			users[obj.uid].tags[k][v] = 1;
 		}
 	});
 	return users;
