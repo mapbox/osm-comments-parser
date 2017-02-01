@@ -14,7 +14,7 @@ var changesQueries = require('./fixtures/changes-queries.json');
 
 var TEST_PG_URL = process.env.OSM_COMMENTS_TEST_POSTGRES_URL || 'postgres://postgres@localhost/osm-comments-test';
 
-tape('check changes parse', function(assert) {
+tape('check changes parser', function(assert) {
     var options = {
         'filename': 'test/fixtures/minutely-replication.osc.gz',
         'pgURL': TEST_PG_URL
