@@ -1,6 +1,6 @@
 [
     {
-        "description": "",
+        "description": "checks that 14 user stat entries have been added",
         "sql": "select count(*) from stats",
         "expected": [
             {
