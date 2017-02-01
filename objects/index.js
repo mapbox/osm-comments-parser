@@ -3,6 +3,7 @@
 var fs = require('fs');
 var pg = require('pg');
 var counter = require('./counter');
+var db = require('./db');
 
 module.exports = processFile;
 
@@ -23,7 +24,12 @@ function processFile(options, callback) {
 }
 
 function parseObjetcs(options, client, callback) {
-  counter(options, function(users) {
-    console.log(JSON.stringify(users, null, 2));
+  counter(options, function(err, changes) {
+    if (err) {
+      console.log('change file parsing failed', err);
+      return callback(err);
+    }
+
+    db.saveChanges(client, changes, callback);
   });
 }
