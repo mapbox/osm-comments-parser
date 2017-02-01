@@ -29,7 +29,6 @@ function parseObjects(options, client, callback) {
             console.log('change file parsing failed', err);
             return callback(err);
         }
-
         db.saveChanges(client, changes, callback);
     });
 }
