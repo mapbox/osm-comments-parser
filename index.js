@@ -2,6 +2,7 @@
 
 var notesParser = require('./notes/index');
 var changesetParser = require('./changesets/index');
+var objectsParser = require('./objects/index');
 var queue = require('queue-async');
 var request = require('request');
 var fs = require('fs');
@@ -95,7 +96,9 @@ function parseURL(url, callback) {
 function getURL(baseURL, number) {
     var stateStr = number.toString().split('').reverse();
     var diff = 9 - stateStr.length;
-    for (var i = 0; i < diff; i++) { stateStr.push('0'); }
+    for (var i = 0; i < diff; i++) {
+        stateStr.push('0');
+    }
     stateStr = stateStr.join('');
     var url = '';
     for (i = 0; i < (stateStr.length / 3); i++) {
@@ -107,7 +110,7 @@ function getURL(baseURL, number) {
 
 //Is being run as cmd line script.
 if (!module.parent) {
-    var USAGE = 'Usage: \n\tnode index.js <notes|changesets> --filename </path/to/file>';
+    var USAGE = 'Usage: \n\tnode index.js <notes|changesets|objects> --filename </path/to/file>';
     var minimistOpts = {
         'string': ['filename', 'pgURL'],
         'boolean': ['initial']
@@ -127,6 +130,11 @@ if (!module.parent) {
     } else if (thing === 'changesets') {
         changesetParser(argv, function() {
             console.log('done changeset parsing');
+            process.exit(0);
+        });
+    } else if (thing === 'objects') {
+        objectsParser(argv, function() {
+            console.log('done objects parsing');
             process.exit(0);
         });
     } else {
