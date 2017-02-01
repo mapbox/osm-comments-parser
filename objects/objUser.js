@@ -2,7 +2,6 @@
 module.exports = function() {
   return {
     username: null,
-    date: 0,
     node: {
       m: 0,
       d: 0,
