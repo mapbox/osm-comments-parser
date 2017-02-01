@@ -8,7 +8,6 @@ module.exports = function(options, done) {
 		users: null,
 		timestamp: null
 	};
-
 	var users = {};
 	if (options.users) {
 		options.users.forEach(function (user) {
@@ -57,15 +56,11 @@ module.exports = function(options, done) {
 
 	_.each(users, function(val, key) {
 		val.changesets = _.size(_.uniq(val.changesets));
-		_.each(val.tags, function(v, k) {
-			val.tags[k] = sortObject(val.tags[k]);
-		});
 	});
 
 	counterObj.users = users;
 	done(null, counterObj);
 };
-
 
 function countVersion(type, user, obj) {
 	if (!obj.visible) {
@@ -100,25 +95,4 @@ function countTags(users, obj) {
 		users[obj.uid].tags_created = tagsCount;
 	}
 	return users;
-}
-
-function sortObject(obj) {
-	var arr = [];
-	var prop;
-	for (prop in obj) {
-		if (obj.hasOwnProperty(prop)) {
-			arr.push({
-				key: prop,
-				value: obj[prop]
-			});
-		}
-	}
-	arr.sort(function(a, b) {
-		return a.value - b.value;
-	}).reverse();
-	var sortTags = {};
-	for (var i = 0; i < arr.length; i++) {
-		sortTags[arr[i].key] = arr[i].value;
-	}
-	return sortTags;
 }
