@@ -3,7 +3,7 @@ CREATE EXTENSION IF NOT EXISTS postgis;
 CREATE TABLE IF NOT EXISTS users (
     id integer PRIMARY KEY,
     name text,
-    first_edit timestamptz,
+    first_edit timestamptz NULL,
     changeset_count integer,
     num_changes integer
 );

@@ -35,10 +35,9 @@ module.exports = {
                         console.log('failed at updating user', err);
                         return callback(err);
                     }
-                    callback(userID);
+                    callback(null, userID);
                 });
             } else {
-
                 var insertUserQuery = 'INSERT INTO users (id, name, first_edit, changeset_count, num_changes) VALUES ($1, $2, $3, $4, $5)';
                 var insertParams = [
                     userID,
@@ -52,7 +51,7 @@ module.exports = {
                         console.log('failed at inserting user', err);
                         return callback(err);
                     }
-                    callback(userID);
+                    callback(null, userID);
                 });
             }
         });
