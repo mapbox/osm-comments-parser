@@ -17,6 +17,7 @@
   "dependencies": {
     "csv": "^0.4.6",
     "graceful-fs": "^4.1.2",
+    "mapbox-data-team": "^1.1.5",
     "minimist": "^1.2.0",
     "osmium": "^0.5.4",
     "pg": "^4.4.3",
