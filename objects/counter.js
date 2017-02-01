@@ -3,7 +3,7 @@ var osmium = require('osmium');
 var _ = require('underscore');
 var objUser = require('./objUser');
 var tags = require('./tags');
-var mbxUsers = require('mapbox-data-team').getEverything();
+var fs = require('fs');
 module.exports = function(options, done) {
 	var counterObj = {
 		users: null,
@@ -11,49 +11,58 @@ module.exports = function(options, done) {
 	};
 
 	var users = {};
-	for (var i = 0; i < mbxUsers.length; i++) {
-		var u = new objUser();
-		u.uid = mbxUsers[i].uid;
-		u.username = mbxUsers[i].username;
-		users[u.uid] = u;
+	if (options.users) {
+		options.users.forEach(function (user) {
+			var u = new objUser();
+			u.uid = user.uid;
+			u.username = user.username;
+			users[u.uid] = u;
+		});
 	}
 	var reader = new osmium.Reader(options.filename);
+	var timestamp = Date.parse(fs.statSync(options.filename).birthtime) / 1000;
+	counterObj.osmdate = timestamp;
 	var handler = new osmium.Handler();
-	// //WAY	
+
+	//WAY
 	handler.on('way', function(way) {
-		counterObj.osmdate = way.timestamp_seconds_since_epoch - way.timestamp_seconds_since_epoch % 1000;
-		if (users[way.uid]) {
-			users[way.uid] = countVersion('way', users[way.uid], way);
-			users[way.uid].changeset.push(way.changeset);
-			users = countTags(users, way);
+		if (!users[way.uid]) {
+			users[way.uid] = new objUser();
 		}
+		users[way.uid] = countVersion('way', users[way.uid], way);
+		users[way.uid].changeset.push(way.changeset);
+		users = countTags(users, way);
 	});
+
 	//NODE
 	handler.on('node', function(node) {
-		counterObj.osmdate = node.timestamp_seconds_since_epoch - node.timestamp_seconds_since_epoch % 1000;
-
-		if (users[node.uid]) {
-			users[node.uid] = countVersion('node', users[node.uid], node);
-			users[node.uid].changeset.push(node.changeset);
-			users = countTags(users, node);
+		if (!users[node.uid]) {
+			users[node.uid] = new objUser();
+			users[node.uid].username = node.user;
 		}
+		users[node.uid] = countVersion('node', users[node.uid], node);
+		users[node.uid].changeset.push(node.changeset);
+		users = countTags(users, node);
 	});
+
 	//RELATION
 	handler.on('relation', function(relation) {
-		counterObj.osmdate = relation.timestamp_seconds_since_epoch - relation.timestamp_seconds_since_epoch % 1000;
-		if (users[relation.uid]) {
-			users[relation.uid] = countVersion('relation', users[relation.uid], relation);
-			users[relation.uid].changeset.push(relation.changeset);
-			users = countTags(users, relation);
+		if (!users[relation.uid]) {
+			users[relation.uid] = new objUser();
 		}
+		users[relation.uid] = countVersion('relation', users[relation.uid], relation);
+		users[relation.uid].changeset.push(relation.changeset);
+		users = countTags(users, relation);
 	});
 	osmium.apply(reader, handler);
+
 	_.each(users, function(val, key) {
 		val.changeset = _.size(_.uniq(val.changeset));
 		_.each(val.tags, function(v, k) {
 			val.tags[k] = sortObject(val.tags[k]);
 		});
 	});
+
 	counterObj.users = users;
 	done(counterObj);
 };

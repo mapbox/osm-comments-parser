@@ -2,7 +2,6 @@
 
 var fs = require('fs');
 var pg = require('pg');
-var decompres = require('./decompress');
 var counter = require('./counter');
 
 module.exports = processFile;
@@ -24,10 +23,7 @@ function processFile(options, callback) {
 }
 
 function parseObjetcs(options, client, callback) {
-  decompres(options, function(err, opts) {
-    if (err) return console.log('error decompresing the file ' + err);
-    counter(opts, function(users) {
-      console.log(users);
-    });
+  counter(options, function(users) {
+    console.log(users);
   });
 }
