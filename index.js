@@ -2,7 +2,7 @@
 
 var notesParser = require('./notes/index');
 var changesetParser = require('./changesets/index');
-var objectsParser = require('./objects/index');
+var changesParser = require('./changes/index');
 var queue = require('queue-async');
 var request = require('request');
 var fs = require('fs');
@@ -110,7 +110,7 @@ function getURL(baseURL, number) {
 
 //Is being run as cmd line script.
 if (!module.parent) {
-    var USAGE = 'Usage: \n\tnode index.js <notes|changesets|objects> --filename </path/to/file>';
+    var USAGE = 'Usage: \n\tnode index.js <notes|changesets|changes> --filename </path/to/file>';
     var minimistOpts = {
         'string': ['filename', 'pgURL'],
         'boolean': ['initial']
@@ -132,9 +132,9 @@ if (!module.parent) {
             console.log('done changeset parsing');
             process.exit(0);
         });
-    } else if (thing === 'objects') {
-        objectsParser(argv, function() {
-            console.log('done objects parsing');
+    } else if (thing === 'changes') {
+        changesParser(argv, function() {
+            console.log('done changes parsing');
             process.exit(0);
         });
     } else {

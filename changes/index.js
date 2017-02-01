@@ -16,14 +16,14 @@ function processFile(options, callback) {
     if (err) {
       return console.error('could not connect to postgres', err);
     }
-    parseObjetcs(options, client, function() {
+    parseObjects(options, client, function() {
       done();
       if (callback) callback();
     });
   });
 }
 
-function parseObjetcs(options, client, callback) {
+function parseObjects(options, client, callback) {
   counter(options, function(err, changes) {
     if (err) {
       console.log('change file parsing failed', err);
