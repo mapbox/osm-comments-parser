@@ -36,7 +36,7 @@ function saveChangeset(changeset, next) {
         tags.created_by,
         tags.imagery_used,
         attribs.NUM_CHANGES,
-        attribs.DISCUSSION_COUNT,
+        attribs.COMMENTS_COUNT,
         util.getIsUnreplied(attribs.UID, changeset.comments) ? 'true' : 'false',
         attribs.MIN_LON,
         attribs.MIN_LAT,
