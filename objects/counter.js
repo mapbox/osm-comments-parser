@@ -80,18 +80,26 @@ function countVersion(type, user, obj) {
 }
 
 function countTags(users, obj) {
+	var tagsCount = {};
 	_.each(obj.tags(), function(v, k) {
-		if (users[obj.uid].tags[k]) {
-			if (users[obj.uid].tags[k][v]) {
-				users[obj.uid].tags[k][v] = users[obj.uid].tags[k][v] + 1;
+		if (tagsCount[k]) {
+			if (tagsCount[k][v]) {
+				tagsCount[k][v] = tagsCount[k][v] + 1;
 			} else {
-				users[obj.uid].tags[k][v] = 1;
+				tagsCount[k][v] = 1;
 			}
 		} else {
-			users[obj.uid].tags[k] = {};
-			users[obj.uid].tags[k][v] = 1;
+			tagsCount[k] = {};
+			tagsCount[k][v] = 1;
 		}
 	});
+	if (!obj.visible) {
+		users[obj.uid].tags_deleted = tagsCount;
+	} else if (obj.version > 1) {
+		users[obj.uid].tags_modified = tagsCount;
+	} else {
+		users[obj.uid].tags_created = tagsCount;
+	}
 	return users;
 }
 

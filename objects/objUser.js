@@ -18,6 +18,8 @@ module.exports = function() {
       c: 0
     },
     changesets: [],
-    tags: {}
+    tags_modified: {},
+    tags_created: {},
+    tags_deleted: {}
   };
 };
