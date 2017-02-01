@@ -22,11 +22,18 @@ function saveChanges(client, changes, next) {
 function saveChange(client, timestamp, uid, user, callback) {
     var insertQuery = 'INSERT INTO stats (change_at, uid, nodes, ways, relations, changesets, tags_created, tags_modified, tags_deleted) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)';
     var params = [timestamp, uid, user.nodes, user.ways, user.relations, user.changesets, user.tags_created, user.tags_modified, user.tags_deleted];
-    client.query(insertQuery, params, function(err) {
+    dbUsers.saveUser(client, uid, user.username, function (err) {
         if (err) {
-            console.log('error inserting change object', err);
-            return callback();
+            console.log('error inserting user object', err);
+            return callback(err);
         }
-    });
+        client.query(insertQuery, params, function(err) {
+            if (err) {
+                console.log('error inserting change object', err);
+                return callback(err);
+            }
+            callback();
+        });
+    } );
 
 }

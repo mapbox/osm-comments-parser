@@ -1,8 +1,7 @@
 'use strict';
 var osmium = require('osmium');
 var _ = require('underscore');
-var objUser = require('./objUser');
-var tags = require('./tags');
+var userModel = require('./user-model');
 var fs = require('fs');
 module.exports = function(options, done) {
 	var counterObj = {
@@ -13,7 +12,7 @@ module.exports = function(options, done) {
 	var users = {};
 	if (options.users) {
 		options.users.forEach(function (user) {
-			var u = new objUser();
+			var u = new userModel();
 			u.uid = user.uid;
 			u.username = user.username;
 			users[u.uid] = u;
@@ -27,7 +26,7 @@ module.exports = function(options, done) {
 	//WAY
 	handler.on('way', function(way) {
 		if (!users[way.uid]) {
-			users[way.uid] = new objUser();
+			users[way.uid] = new userModel();
 		}
 		users[way.uid] = countVersion('ways', users[way.uid], way);
 		users[way.uid].changesets.push(way.changeset);
@@ -37,7 +36,7 @@ module.exports = function(options, done) {
 	//NODE
 	handler.on('node', function(node) {
 		if (!users[node.uid]) {
-			users[node.uid] = new objUser();
+			users[node.uid] = new userModel();
 			users[node.uid].username = node.user;
 		}
 		users[node.uid] = countVersion('nodes', users[node.uid], node);
@@ -48,7 +47,7 @@ module.exports = function(options, done) {
 	//RELATION
 	handler.on('relation', function(relation) {
 		if (!users[relation.uid]) {
-			users[relation.uid] = new objUser();
+			users[relation.uid] = new userModel();
 		}
 		users[relation.uid] = countVersion('relations', users[relation.uid], relation);
 		users[relation.uid].changesets.push(relation.changeset);
