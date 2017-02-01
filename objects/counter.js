@@ -7,7 +7,7 @@ var fs = require('fs');
 module.exports = function(options, done) {
 	var counterObj = {
 		users: null,
-		osmdate: null
+		timestamp: null
 	};
 
 	var users = {};
@@ -20,8 +20,8 @@ module.exports = function(options, done) {
 		});
 	}
 	var reader = new osmium.Reader(options.filename);
-	var timestamp = Date.parse(fs.statSync(options.filename).birthtime) / 1000;
-	counterObj.osmdate = timestamp;
+	var timestamp = fs.statSync(options.filename).birthtime;
+	counterObj.timestamp = timestamp;
 	var handler = new osmium.Handler();
 
 	//WAY
@@ -29,7 +29,7 @@ module.exports = function(options, done) {
 		if (!users[way.uid]) {
 			users[way.uid] = new objUser();
 		}
-		users[way.uid] = countVersion('way', users[way.uid], way);
+		users[way.uid] = countVersion('ways', users[way.uid], way);
 		users[way.uid].changesets.push(way.changeset);
 		users = countTags(users, way);
 	});
@@ -40,7 +40,7 @@ module.exports = function(options, done) {
 			users[node.uid] = new objUser();
 			users[node.uid].username = node.user;
 		}
-		users[node.uid] = countVersion('node', users[node.uid], node);
+		users[node.uid] = countVersion('nodes', users[node.uid], node);
 		users[node.uid].changesets.push(node.changeset);
 		users = countTags(users, node);
 	});
@@ -50,7 +50,7 @@ module.exports = function(options, done) {
 		if (!users[relation.uid]) {
 			users[relation.uid] = new objUser();
 		}
-		users[relation.uid] = countVersion('relation', users[relation.uid], relation);
+		users[relation.uid] = countVersion('relations', users[relation.uid], relation);
 		users[relation.uid].changesets.push(relation.changeset);
 		users = countTags(users, relation);
 	});
@@ -64,7 +64,7 @@ module.exports = function(options, done) {
 	});
 
 	counterObj.users = users;
-	done(counterObj);
+	done(null, counterObj);
 };
 
 

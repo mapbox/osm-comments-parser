@@ -2,17 +2,17 @@
 module.exports = function() {
   return {
     username: null,
-    node: {
+    nodes: {
       m: 0,
       d: 0,
       c: 0
     },
-    way: {
+    ways: {
       m: 0,
       d: 0,
       c: 0
     },
-    relation: {
+    relations: {
       m: 0,
       d: 0,
       c: 0
