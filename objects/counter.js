@@ -30,7 +30,7 @@ module.exports = function(options, done) {
 			users[way.uid] = new objUser();
 		}
 		users[way.uid] = countVersion('way', users[way.uid], way);
-		users[way.uid].changeset.push(way.changeset);
+		users[way.uid].changesets.push(way.changeset);
 		users = countTags(users, way);
 	});
 
@@ -41,7 +41,7 @@ module.exports = function(options, done) {
 			users[node.uid].username = node.user;
 		}
 		users[node.uid] = countVersion('node', users[node.uid], node);
-		users[node.uid].changeset.push(node.changeset);
+		users[node.uid].changesets.push(node.changeset);
 		users = countTags(users, node);
 	});
 
@@ -51,13 +51,13 @@ module.exports = function(options, done) {
 			users[relation.uid] = new objUser();
 		}
 		users[relation.uid] = countVersion('relation', users[relation.uid], relation);
-		users[relation.uid].changeset.push(relation.changeset);
+		users[relation.uid].changesets.push(relation.changeset);
 		users = countTags(users, relation);
 	});
 	osmium.apply(reader, handler);
 
 	_.each(users, function(val, key) {
-		val.changeset = _.size(_.uniq(val.changeset));
+		val.changesets = _.size(_.uniq(val.changesets));
 		_.each(val.tags, function(v, k) {
 			val.tags[k] = sortObject(val.tags[k]);
 		});

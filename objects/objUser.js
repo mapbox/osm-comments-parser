@@ -17,7 +17,7 @@ module.exports = function() {
       d: 0,
       c: 0
     },
-    changeset: [],
+    changesets: [],
     tags: {}
   };
 };
