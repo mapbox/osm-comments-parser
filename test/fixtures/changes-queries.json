@@ -1,0 +1,11 @@
+[
+    {
+        "description": "",
+        "sql": "select count(*) from stats",
+        "expected": [
+            {
+                "count": "14"
+            }
+        ]
+    }
+]

@@ -47,10 +47,16 @@ module.exports.parseChangesets = parseChangesets;
 
 module.exports.parseURL = parseURL;
 
+module.exports.parseChanges = parseChanges;
+
 module.exports.getURL = getURL;
 
 function parseChangesets(options, callback) {
     changesetParser(options, callback);
+}
+
+function parseChanges(options, callback) {
+    changesParser(options, callback);
 }
 
 module.exports.backfillChangesets = function(start, end, callback) {
