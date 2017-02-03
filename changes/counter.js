@@ -25,8 +25,11 @@ module.exports = function(options, done) {
 
 	//WAY
 	handler.on('way', function(way) {
-		if (!users[way.uid]) {
-			users[way.uid] = new userModel();
+		if (!options.users) {
+			if (!users[way.uid]) {
+				users[way.uid] = new userModel();
+				users[way.uid].username = way.user;
+			}
 		}
 		users[way.uid] = countVersion('ways', users[way.uid], way);
 		users[way.uid].changesets.push(way.changeset);
@@ -35,9 +38,11 @@ module.exports = function(options, done) {
 
 	//NODE
 	handler.on('node', function(node) {
-		if (!users[node.uid]) {
-			users[node.uid] = new userModel();
-			users[node.uid].username = node.user;
+		if (!options.users) {
+			if (!users[node.uid]) {
+				users[node.uid] = new userModel();
+				users[node.uid].username = node.user;
+			}
 		}
 		users[node.uid] = countVersion('nodes', users[node.uid], node);
 		users[node.uid].changesets.push(node.changeset);
@@ -46,8 +51,11 @@ module.exports = function(options, done) {
 
 	//RELATION
 	handler.on('relation', function(relation) {
-		if (!users[relation.uid]) {
-			users[relation.uid] = new userModel();
+		if (!options.users) {
+			if (!users[relation.uid]) {
+				users[relation.uid] = new userModel();
+				users[relation.uid].username = relation.user;
+			}
 		}
 		users[relation.uid] = countVersion('relations', users[relation.uid], relation);
 		users[relation.uid].changesets.push(relation.changeset);
