@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS stats (
     nodes jsonb NULL,
     ways jsonb NULL,
     relations jsonb NULL,
-    changesets integer NULL,
+    changesets integer ARRAY,
     tags_created jsonb NULL,
     tags_modified jsonb NULL,
     tags_deleted jsonb NULL

@@ -56,7 +56,7 @@ module.exports = function(options, done) {
 	osmium.apply(reader, handler);
 
 	_.each(users, function(val, key) {
-		val.changesets = _.size(_.uniq(val.changesets));
+		val.changesets = _.uniq(val.changesets);
 		_.each(val.tags, function(v, k) {
 			val.tags[k] = sortObject(val.tags[k]);
 		});
