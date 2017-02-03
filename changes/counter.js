@@ -55,7 +55,7 @@ module.exports = function(options, done) {
 	osmium.apply(reader, handler);
 
 	_.each(users, function(val, key) {
-		val.changesets = _.size(_.uniq(val.changesets));
+		val.changesets = _.uniq(val.changesets);
 	});
 
 	counterObj.users = users;
