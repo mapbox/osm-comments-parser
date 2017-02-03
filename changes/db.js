@@ -12,7 +12,9 @@ function saveChanges(client, changes, next) {
     var q = queue(2);
     var timestamp = changes.timestamp;
     Object.keys(changes.users).forEach(function (key) {
-        q.defer(saveChange, client, timestamp, parseInt(key, 10), changes.users[key]);
+        if (changes.users[key].changesets.length > 0) {
+            q.defer(saveChange, client, timestamp, parseInt(key, 10), changes.users[key]);
+        }
     });
     q.awaitAll(function() {
         next();
