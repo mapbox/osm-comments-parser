@@ -12,7 +12,7 @@ module.exports = function(options, done) {
 	if (options.users) {
 		options.users.forEach(function (user) {
 			var u = new userModel();
-			u.uid = user.uid;
+			u.uid = parseInt(user.uid, 10);
 			u.username = user.username;
 			users[u.uid] = u;
 		});
