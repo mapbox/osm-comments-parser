@@ -3,6 +3,7 @@ var osmium = require('osmium');
 var _ = require('underscore');
 var userModel = require('./user-model');
 var fs = require('fs');
+
 module.exports = function(options, done) {
 	var counterObj = {
 		users: null,
@@ -30,9 +31,11 @@ module.exports = function(options, done) {
 				users[way.uid].username = way.user;
 			}
 		}
-		users[way.uid] = countVersion('ways', users[way.uid], way);
-		users[way.uid].changesets.push(way.changeset);
-		users = countTags(users, way);
+		if (users[way.uid]) {
+			users[way.uid] = countVersion('ways', users[way.uid], way);
+			users[way.uid].changesets.push(way.changeset);
+			users = countTags(users, way);
+		}
 	});
 
 	//NODE
@@ -43,9 +46,11 @@ module.exports = function(options, done) {
 				users[node.uid].username = node.user;
 			}
 		}
-		users[node.uid] = countVersion('nodes', users[node.uid], node);
-		users[node.uid].changesets.push(node.changeset);
-		users = countTags(users, node);
+		if (users[node.uid]) {
+			users[node.uid] = countVersion('nodes', users[node.uid], node);
+			users[node.uid].changesets.push(node.changeset);
+			users = countTags(users, node);
+		}
 	});
 
 	//RELATION
@@ -56,9 +61,11 @@ module.exports = function(options, done) {
 				users[relation.uid].username = relation.user;
 			}
 		}
-		users[relation.uid] = countVersion('relations', users[relation.uid], relation);
-		users[relation.uid].changesets.push(relation.changeset);
-		users = countTags(users, relation);
+		if (users[relation.uid]) {
+			users[relation.uid] = countVersion('relations', users[relation.uid], relation);
+			users[relation.uid].changesets.push(relation.changeset);
+			users = countTags(users, relation);
+		}
 	});
 	osmium.apply(reader, handler);
 
