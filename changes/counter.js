@@ -20,7 +20,7 @@ module.exports = function(options, done) {
 		});
 	}
 	var reader = new osmium.Reader(options.filename);
-	var timestamp = fs.statSync(options.filename).birthtime;
+	var timestamp = fs.statSync(options.filename).ctime;
 	counterObj.timestamp = timestamp;
 	var handler = new osmium.Handler();
 
