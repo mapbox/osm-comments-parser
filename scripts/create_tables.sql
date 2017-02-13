@@ -3,7 +3,7 @@ CREATE EXTENSION IF NOT EXISTS postgis;
 CREATE TABLE IF NOT EXISTS users (
     id integer PRIMARY KEY,
     name text,
-    first_edit timestamptz,
+    first_edit timestamptz NULL,
     changeset_count integer,
     num_changes integer
 );
@@ -53,4 +53,17 @@ CREATE TABLE IF NOT EXISTS changeset_comments (
     username TEXT NULL,
     timestamp timestamptz,
     comment text 
+);
+
+CREATE TABLE IF NOT EXISTS stats (
+    id serial PRIMARY KEY,
+    change_at timestamptz,
+    uid integer REFERENCES users (id) NULL,
+    nodes jsonb NULL,
+    ways jsonb NULL,
+    relations jsonb NULL,
+    changesets integer ARRAY,
+    tags_created jsonb NULL,
+    tags_modified jsonb NULL,
+    tags_deleted jsonb NULL
 );

@@ -3,13 +3,39 @@
 var tape = require('tape');
 var processNotes = require('../index').parseNotes;
 var processChangesets = require('../index').parseChangesets;
+var processChanges = require('../index').parseChanges;
 var pg = require('pg');
 var queue = require('queue-async');
 var notesFirstRunQueries = require('./fixtures/notes-first-run-queries.json');
 var changesetsFirstRunQueries = require('./fixtures/changesets-first-run-queries.json');
 var notesSecondRunQueries = require('./fixtures/notes-second-run-queries.json');
 var changesetsSecondRunQueries = require('./fixtures/changesets-second-run-queries.json');
+var changesQueries = require('./fixtures/changes-queries.json');
+
 var TEST_PG_URL = process.env.OSM_COMMENTS_TEST_POSTGRES_URL || 'postgres://postgres@localhost/osm-comments-test';
+
+tape('check changes parser', function(assert) {
+    var options = {
+        'filename': 'test/fixtures/minutely-replication.osc.gz',
+        'pgURL': TEST_PG_URL
+    };
+    processChanges(options, function() {
+        assert.pass('post changes processing callback called');
+        pg.connect(options.pgURL, function(err, client) {
+            if (err) {
+                console.log('db connection error', err);
+            }
+            var q = queue(10);
+            changesQueries.forEach(function(query) {
+                q.defer(runQuery, client, assert, query);
+            });
+
+            q.awaitAll(function() {
+                assert.end();
+            });
+        });
+    });
+});
 
 tape('check notes parser', function(assert) {
     var options = {
