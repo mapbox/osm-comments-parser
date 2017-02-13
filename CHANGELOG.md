@@ -1,3 +1,7 @@
+### Version 3.1.0
+
+ - Processes detailed stats for a list of users parsing change files with node-osmium
+
 ### Version 3.0.0
 
  - Adds metadata for users
