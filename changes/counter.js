@@ -128,14 +128,14 @@ function mergeCounts(oldTags, newTags) {
     Object.keys(newTags).forEach(function (k) {
         if (!oldTags.hasOwnProperty(k)) {
             oldTags[k] = {}
-        } else {
-            Object.keys(newTags[k]).forEach(function (v) {
-                if (!oldTags[k].hasOwnProperty(v)) {
-                    oldTags[k][v] = newTags[k][v]
-                } else {
-                    oldTags[k][v] = oldTags[k][v] + newTags[k][v]
-                }
-            });
         }
+
+        Object.keys(newTags[k]).forEach(function (v) {
+            if (!oldTags[k].hasOwnProperty(v)) {
+                oldTags[k][v] = newTags[k][v]
+            } else {
+                oldTags[k][v] = oldTags[k][v] + newTags[k][v]
+            }
+        });
     });
 }
