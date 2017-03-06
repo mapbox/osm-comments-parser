@@ -36,6 +36,5 @@ function saveChange(client, timestamp, uid, user, callback) {
             }
             callback();
         });
-    } );
-
+    });
 }

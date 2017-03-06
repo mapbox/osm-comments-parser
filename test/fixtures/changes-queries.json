@@ -7,5 +7,160 @@
                 "count": "14"
             }
         ]
+    },
+    {
+        "description": "check total number of nodes created by uid :148676",
+        "sql":  "select nodes from stats where uid=148676",
+        "expected": [
+           { "nodes": {
+                "c": 304,
+                "d": 0,
+                "m": 26
+            }}
+        ]
+    },
+    {
+        "description": "check total number of ways created by uid :148676",
+        "sql": "select ways from stats where uid=148676",
+        "expected": [
+          { "ways" : {
+                "c": 69,
+                "d": 0,
+                "m": 4
+            }}
+        ]
+    },
+    {
+        "description": "check total number of relations created by uid :148676",
+        "sql": "select relations from stats where uid=148676",
+        "expected": [
+           { "relations": {
+                "c": 0,
+                "d": 0,
+                "m": 0
+            }}
+        ]
+    },
+    {
+        "description": "check total number of relations created by uid :485898",
+        "sql": "select relations from stats where uid=485898",
+        "expected": [
+            {
+                "relations": {
+                    "c": 0,
+                    "d": 0,
+                    "m": 2
+                }
+            }
+        ]
+    },
+    {
+        "description": "check all changesets  by uid :5161593",
+        "sql": "select changesets from stats where uid=5161593",
+        "expected": [
+            {
+                "changesets": [
+                    45706205,
+                    45706213,
+                    45706215
+                ]
+            }
+        ]
+    },
+    {
+        "description": "check all changesets  by uid :148676",
+        "sql": "select changesets from stats where uid=148676",
+        "expected": [
+            {
+                "changesets": [
+                    45706209
+                ]
+            }
+        ]
+    },
+    {
+        "description": "check all tags  by uid :148676",
+        "sql": "select tags_created,tags_modified, tags_deleted from stats where uid=148676",
+        "expected": [
+            {
+                "tags_created":{
+                    "highway": {
+                        "residential": 1
+                    },
+                    "source:geomatry": {
+                        "Bing": 1
+                    }
+                },
+                "tags_modified": {
+                    "building": {
+                        "yes": 1
+                    }
+                },
+                "tags_deleted": {}
+            }
+        ]
+    },
+    {
+        "description": "check all tags  by uid :148676",
+        "sql": "select tags_created,tags_modified, tags_deleted from stats where uid=148676",
+        "expected": [
+            {
+                "tags_created": {
+                    "highway": {
+                        "residential": 1
+                    },
+                    "source:geomatry": {
+                        "Bing": 1
+                    }
+                },
+                "tags_modified": {
+                    "building": {
+                        "yes": 1
+                    }
+                },
+                "tags_deleted": {}
+            }
+        ]
+    },
+    {
+        "description": "check all tags_modified  by uid :485898",
+        "sql": "select tags_modified from stats where uid=485898",
+        "expected": [
+            {
+                "tags_modified": 
+                   {
+                    "ref": {
+                        "RN9": 1
+                    },
+                    "name": {
+                        "Autopista Ernesto Guevara": 1
+                    },
+                    "type": {
+                        "route": 1
+                    },
+                    "route": {
+                        "road": 1
+                    },
+                    "loc_ref": {
+                        "AU9": 1
+                    },
+                    "old_ref": {
+                        "1V09": 1
+                    },
+                    "distance": {
+                        "387 km": 1
+                    },
+                    "wikipedia": {
+                        "es:Autopista Rosario-Córdoba": 1
+                    },
+                    "short_name": {
+                        "Ernesto Guevara": 1
+                    },
+                    "is_in:country": {
+                        "Argentina": 1
+                    }
+                }
+            }
+        ]
     }
 ]

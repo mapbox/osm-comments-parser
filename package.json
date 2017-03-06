@@ -8,9 +8,9 @@
     "url": "https://github.com/mapbox/osm-comments-parser.git"
   },
   "scripts": {
-    "test": "./test/setup.sh && node test/test.js && ./test/teardown.sh",
+    "test": "node test/test.js || ./test/teardown.sh",
     "lint": "./node_modules/eslint/bin/eslint.js *.js test/*.js",
-    "pretest": "npm run lint"
+    "pretest": "npm run lint && ./test/setup.sh"
   },
   "author": "Sanjay Bhangar",
   "license": "ISC",
