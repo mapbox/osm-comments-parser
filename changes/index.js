@@ -11,6 +11,7 @@ function processFile(options, callback) {
     options = options || {};
     options.isInitial = options.initial || false;
     options.filename = options.filename || 'data/objects-latest.osc';
+    options.statefile = options.statefile || false;
     options.pgURL = options.pgURL || process.env.OSM_COMMENTS_POSTGRES_URL || 'postgres://postgres@localhost/osm-comments';
     pg.connect(options.pgURL, function(err, client, done) {
         if (err) {
