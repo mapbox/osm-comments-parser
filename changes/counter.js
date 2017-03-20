@@ -4,6 +4,17 @@ var _ = require('underscore');
 var userModel = require('./user-model');
 var fs = require('fs');
 
+function readTimeStamp(options) {
+	if (!options.statefile) {
+		return fs.statSync(options.filename).ctime;
+	}
+	var body = fs.readFileSync(options.statefile, {'encoding': 'utf-8'});
+	var timestamp = body.split('\n')[3];
+	timestamp = timestamp.split('=')[1];
+	timestamp = timestamp.split('\\').join('');
+	return timestamp;
+}
+
 module.exports = function(options, done) {
     var counterObj = {
         users: null,
@@ -19,7 +30,7 @@ module.exports = function(options, done) {
         });
     }
     var reader = new osmium.Reader(options.filename);
-    var timestamp = fs.statSync(options.filename).ctime;
+    var timestamp = readTimeStamp(options);
     counterObj.timestamp = timestamp;
     var handler = new osmium.Handler();
 
