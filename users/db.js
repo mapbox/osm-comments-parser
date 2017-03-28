@@ -23,14 +23,15 @@ module.exports = {
                 var userRow = result.rows[0];
                 var changesetCount = userRow.changeset_count + 1;
                 var numChanges = userRow.num_changes + Number(attribs.NUM_CHANGES);
-                var firstEditDate = new Date(userRow.first_edit) ? userRow.first_edit : null;
+
+                var firstEditDate = userRow.first_edit ? new Date(userRow.first_edit) : null;
                 var changesetDate = new Date(attribs.CREATED_AT);
                 if (!firstEditDate || changesetDate < firstEditDate) {
                     firstEditDate = changesetDate;
                 }
                 var updateQ = 'UPDATE users SET name=$1, changeset_count=$2, num_changes=$3, first_edit=$4 WHERE id=$5';
                 var updateParams = [userName, changesetCount, numChanges, firstEditDate, userID];
-                client.query(updateQ, updateParams, function(err, result) {
+                client.query(updateQ, updateParams, function(err) {
                     if (err) {
                         console.log('failed at updating user', err);
                         return callback(err);
