@@ -25,7 +25,7 @@ module.exports = {
                 var numChanges = userRow.num_changes + Number(attribs.NUM_CHANGES);
 
                 var firstEditDate = userRow.first_edit ? new Date(userRow.first_edit) : null;
-                var changesetDate = new Date(attribs.CREATED_AT);
+                var changesetDate = attribs.CREATED_AT ? new Date(attribs.CREATED_AT) : null;
                 if (!firstEditDate || changesetDate < firstEditDate) {
                     firstEditDate = changesetDate;
                 }
