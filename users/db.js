@@ -11,7 +11,7 @@ module.exports = {
             callback(null);
             return;
         }
-        var checkUserQuery = 'SELECT id, name, changeset_count, num_changes from users where id=$1';
+        var checkUserQuery = 'SELECT id, name, changeset_count, num_changes, first_edit from users where id=$1';
 
         client.query(checkUserQuery, [userID], function(err, result) {
             if (err) {
