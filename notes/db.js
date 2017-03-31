@@ -25,7 +25,7 @@ function saveNote(client, note, next) {
     var closedAt = attribs.CLOSED_AT || null;
     var pt = util.format('POINT(%d %d)', lon, lat);
     var params = [id, createdAt, closedAt, userID, pt];
-    var selectQuery = 'SELECT id, created_at from notes where id=$1';
+    var selectQuery = 'SELECT * from notes where id=$1';
 
     client.query(selectQuery, [id], function(err, result) {
         if (err) {
