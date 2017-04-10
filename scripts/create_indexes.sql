@@ -47,3 +47,7 @@ CREATE INDEX note_comments_timestamp_idx ON note_comments(timestamp);
 CREATE INDEX note_comments_comment_tsvector_idx ON note_comments USING gin(to_tsvector('english', comment));
 
 CREATE INDEX users_name_idx ON users(name);
+
+CREATE INDEX stats_change_at_idx ON stats(change_at);
+
+CREATE INDEX stats_uid_idx ON stats(uid);

@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS changeset_comments (
 );
 
 CREATE TABLE IF NOT EXISTS stats (
-    id serial PRIMARY KEY,
+    id uuid PRIMARY KEY,
     change_at timestamptz,
     uid integer REFERENCES users (id) NULL,
     nodes jsonb NULL,

@@ -32,6 +32,7 @@ module.exports = function(options, done) {
     var reader = new osmium.Reader(options.filename);
     var timestamp = readTimeStamp(options);
     counterObj.timestamp = timestamp;
+    counterObj.replicationId = options.replicationId;
     var handler = new osmium.Handler();
 
     //WAY

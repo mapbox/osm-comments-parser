@@ -1,0 +1,7 @@
+#Mon Feb 20 09:49:04 UTC 2017
+txnMaxQueried=1005150451
+sequenceNumber=2325481
+timestamp=2017-02-20T09\:49\:02Z
+txnReadyList=
+txnMax=1005150451
+txnActiveList=1005150096,1005150127

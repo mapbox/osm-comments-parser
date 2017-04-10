@@ -17,6 +17,7 @@ var TEST_PG_URL = process.env.OSM_COMMENTS_TEST_POSTGRES_URL || 'postgres://post
 tape('check changes parser', function(assert) {
     var options = {
         'filename': 'test/fixtures/minutely-replication.osc.gz',
+        'statefile': 'test/fixtures/480-shiv.state.txt',
         'pgURL': TEST_PG_URL
     };
     processChanges(options, function() {
