@@ -162,5 +162,16 @@
                 }
             }
         ]
+    },
+    {
+        "description": "check if node IDs are populated for uid: 4905512",
+        "sql": "select nodes_created from stats where uid=4905512",
+        "expected": [
+            {
+                "nodes_created": [
+                    "4650645889"
+                ]
+            }
+        ]
     }
 ]
