@@ -83,6 +83,15 @@ module.exports = function(options, done) {
 
     _.each(users, function(val, key) {
         val.changesets = _.uniq(val.changesets);
+        val['nodes_created'] = _.uniq(val['nodes_created']);
+        val['ways_created'] = _.uniq(val['ways_created']);
+        val['relations_created'] = _.uniq(val['relations_created']);
+        val['nodes_modified'] = _.uniq(val['nodes_modified']);
+        val['ways_modified'] = _.uniq(val['ways_modified']);
+        val['relations_modified'] = _.uniq(val['relations_modified']);
+        val['nodes_deleted'] = _.uniq(val['nodes_deleted']);
+        val['ways_deleted'] = _.uniq(val['ways_deleted']);
+        val['relations_deleted'] = _.uniq(val['relations_deleted']);
     });
 
     counterObj.users = users;
@@ -92,10 +101,13 @@ module.exports = function(options, done) {
 function countVersion(type, user, obj) {
     if (!obj.visible) {
         ++user[type].d;
+        user[type+'_deleted'] ? user[type+'_deleted'].push(obj.id) : user[type+'_deleted'] = [obj.id];
     } else if (obj.version > 1) {
         ++user[type].m;
+        user[type+'_modified'] ? user[type+'_modified'].push(obj.id) : user[type+'_modified'] = [obj.id];
     } else {
         ++user[type].c;
+        user[type+'_created'] ? user[type+'_created'].push(obj.id) : user[type+'_created'] = [obj.id];
     }
     return user;
 }

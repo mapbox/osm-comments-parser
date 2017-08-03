@@ -65,5 +65,14 @@ CREATE TABLE IF NOT EXISTS stats (
     changesets integer ARRAY,
     tags_created jsonb NULL,
     tags_modified jsonb NULL,
-    tags_deleted jsonb NULL
+    tags_deleted jsonb NULL,
+    nodes_created bigint ARRAY,
+    ways_created bigint ARRAY,
+    relations_created bigint ARRAY,
+    nodes_modified bigint ARRAY,
+    ways_modified bigint ARRAY,
+    relations_modified bigint ARRAY,
+    nodes_deleted bigint ARRAY,
+    ways_deleted bigint ARRAY,
+    relations_deleted bigint ARRAY
 );
