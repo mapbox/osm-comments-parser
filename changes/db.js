@@ -45,11 +45,20 @@ function saveChange(client, timestamp, uid, user, replicationId, callback) {
                 user.changesets,
                 user.tags_created,
                 user.tags_modified,
-                user.tags_deleted
+                user.tags_deleted,
+                user.nodes_created,
+                user.ways_created,
+                user.relations_created,
+                user.nodes_modified,
+                user.ways_modified,
+                user.relations_modified,
+                user.nodes_deleted,
+                user.ways_deleted,
+                user.relations_deleted
             ];
 
             if (result.rows.length === 0) {
-                var insertQuery = 'INSERT INTO stats (id, change_at, uid, nodes, ways, relations, changesets, tags_created, tags_modified, tags_deleted) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)';
+                var insertQuery = 'INSERT INTO stats (id, change_at, uid, nodes, ways, relations, changesets, tags_created, tags_modified, tags_deleted, nodes_created, ways_created, relations_created, nodes_modified, ways_modified, relations_modified, nodes_deleted, ways_deleted, relations_deleted) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)';
                 client.query(insertQuery, params, function(err) {
                     if (err) {
                         console.log('error inserting change object', err);
