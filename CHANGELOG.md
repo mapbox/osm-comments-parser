@@ -1,3 +1,7 @@
+### Version 4.0
+
+- DB schema for the stats table changes - adds ARRAY columns to store feature IDs of nodes, ways, and relations created, modified, and deleted.
+
 ### Version 3.1.0
 
  - Processes detailed stats for a list of users parsing change files with node-osmium
