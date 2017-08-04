@@ -1,6 +1,6 @@
 {
   "name": "osm-comments-notes-parser",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Parses through OSM changeset discussion and notes files and puts them into a postgres db",
   "main": "index.js",
   "repository": {
