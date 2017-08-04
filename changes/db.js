@@ -67,7 +67,7 @@ function saveChange(client, timestamp, uid, user, replicationId, callback) {
                     callback();
                 });
             } else {
-                var updateQuery = 'UPDATE stats SET change_at=$2, uid=$3, nodes=$4, ways=$5, relations=$6, changesets=$7, tags_created=$8, tags_modified=$9, tags_deleted=$10 WHERE id=$1';
+                var updateQuery = 'UPDATE stats SET change_at=$2, uid=$3, nodes=$4, ways=$5, relations=$6, changesets=$7, tags_created=$8, tags_modified=$9, tags_deleted=$10, nodes_created=$11, ways_created=$12, relations_created=$13, nodes_modified=$14, ways_modified=$15, relations_modified=$16, nodes_deleted=$17, ways_deleted=$18, relations_deleted=$19 WHERE id=$1';
                 client.query(updateQuery, params, function(err) {
                     if (err) {
                         console.log('error updating stats row', err);
