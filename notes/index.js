@@ -81,6 +81,10 @@ function parseNotes(xmlFilename, client, callback) {
         callback();
     });
 
+    saxStream.hookSync('error', function (err) {
+        console.log('sax stream error', JSON.stringify(err));
+    });
+
     fs.createReadStream(xmlFilename)
         .pipe(saxStream);
 
