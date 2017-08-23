@@ -27,11 +27,14 @@ function saveNote(client, note, next) {
     var params = [id, createdAt, closedAt, userID, pt];
     var selectQuery = 'SELECT * from notes where id=$1';
 
+    console.log(selectQuery);
+
     client.query(selectQuery, [id], function(err, result) {
         if (err) {
             console.log('error selecting note', err);
         }
         if (result.rows.length > 0) {
+            console.log('client query');
             var dbCreatedAt = result.rows[0].created_at;
             var dbClosedAt = result.rows[0].closed_at;
             var xmlCreatedAt = new Date(createdAt);
@@ -39,11 +42,14 @@ function saveNote(client, note, next) {
             var dbClosedAtISOString = dbClosedAt ? dbClosedAt.toISOString() : null;
             var xmlClosedAtISOString = xmlClosedAt ? xmlClosedAt.toISOString() : null;
             if (dbCreatedAt.toISOString() !== xmlCreatedAt.toISOString() || dbClosedAtISOString !== xmlClosedAtISOString) {
+                console.log('update notes');
                 updateNote(client, params, note, next, saveComments);
             } else {
+                console.log('save comments');
                 saveComments(client, note, next);
             }
         } else {
+            console.log('save users');
             dbUsers.saveUser(client, userID, userName, function() {
                 insertNote(client, params, note, next, saveComments);
             });
@@ -66,6 +72,8 @@ function getOpenedByUser(note) {
 
 function updateNote(client, params, note, next, callback) {
     var updateQuery = 'UPDATE notes SET created_at=$2, closed_at=$3, opened_by=$4, point=ST_GeomFromText($5, 4326) where id=$1';
+    console.log('updating note', updateQuery);
+
     client.query(updateQuery, params, function(err) {
         if (err) {
             console.log('error updating note', err);
@@ -76,6 +84,7 @@ function updateNote(client, params, note, next, callback) {
 
 function insertNote(client, params, note, next, callback) {
     var insertQuery = 'INSERT INTO notes (id, created_at, closed_at, opened_by, point) VALUES ($1, $2, $3, $4, ST_GeomFromText($5, 4326))';
+    console.log('inserting note', insertQuery);
     client.query(insertQuery, params, function(err) {
         if (err) {
             console.log('error inserting note', err);

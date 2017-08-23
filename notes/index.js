@@ -24,11 +24,16 @@ module.exports = processFile;
 function processFile(options, callback) {
     options = options || {};
     var filename = options.filename || 'data/planet-notes-latest.osn';
+    console.log(filename);
     var pgURL = options.pgURL || process.env.OSM_COMMENTS_POSTGRES_URL || 'postgres://postgres@localhost/osm-comments';
+    console.log(pgURL);
     pg.connect(pgURL, function(err, client, done) {
         if (err) {
             return console.error('could not connect to postgres', err);
         }
+        if (err)
+            console.log('error connect postgres', err);
+        console.log(client);
         parseNotes(filename, client, function() {
             done();
             callback();
@@ -38,10 +43,12 @@ function processFile(options, callback) {
 
 function parseNotes(xmlFilename, client, callback) {
     xmlFilename = xmlFilename || '/Users/sanjaybhangar/tmp/cdata/planet-notes-latest.osn';
+    console.log(xmlFilename);
     var saxStream = new SaxAsync();
     var currentNote, currentComment;
     saxStream.hookSync('opentag', function(node) {
         var tagName = node.name.toLowerCase();
+        console.log('tag name', tagName);
         if (tagName === 'note') {
             currentNote = node;
             currentNote.comments = [];
@@ -53,6 +60,7 @@ function parseNotes(xmlFilename, client, callback) {
     saxStream.hookAsync('closetag', function(next, tagName) {
         tagName = tagName.toLowerCase();
         if (tagName === 'note') {
+            console.log('saving note');
             db.saveNote(client, currentNote, function () {
                 currentNote = null;
                 next();
