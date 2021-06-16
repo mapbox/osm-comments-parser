@@ -11,7 +11,8 @@ Run `npm install`
 Setup database:
 
     createdb <db_name>
-    psql <db_name> < create_tables.sql
+    psql <db_name> < scripts/create_tables.sql
+    psql <db_name> < scripts/create_indexes.sql
 
 Setup environment variables required for the project:
 
