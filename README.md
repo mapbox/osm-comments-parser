@@ -11,7 +11,11 @@ Run `npm install`
 Setup database:
 
     createdb <db_name>
-    psql <db_name> < create_tables.sql
+    psql <db_name> < scripts/create_tables.sql
+
+The following command adds indexes to the database, making it much more swift to query. You can add them right after the setup of the database, or perform this after the initial data loading (see below) for better performance during the import.
+
+    psql <db_name> < scripts/create_indexes.sql
 
 Setup environment variables required for the project:
 
